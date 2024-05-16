@@ -10,10 +10,20 @@
   },
   "dependencies": {
     "@material-tailwind/react": "^2.1.9",
+    "@noir-lang/backend_barretenberg": "^0.22.0",
+    "@noir-lang/noir_js": "^0.22.0",
+    "@reduxjs/toolkit": "^2.2.5",
+    "axios": "^1.6.8",
+    "canvas-confetti": "^1.9.3",
+    "ethers": "^5.7.2",
     "lucide-react": "^0.378.0",
+    "magic-sdk": "^28.0.2",
     "next": "14.2.3",
+    "qrcode.react": "^3.1.0",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-redux": "^9.1.2",
+    "sonner": "^1.4.41"
   },
   "devDependencies": {
     "postcss": "^8",
