@@ -80,7 +80,11 @@ const LoginForm = () => {
   return (
     <Card color="transparent" shadow={false} className="w-fit mx-auto">
       <div className="p-5 bg-white rounded-t-xl">
-        <Typography variant="h4" color="blue-gray" className="text-center">
+        <Typography
+          variant="h4"
+          color="blue-gray"
+          className="text-center font-outfit"
+        >
           Login to your account
         </Typography>
 
@@ -90,7 +94,8 @@ const LoginForm = () => {
               <Input
                 variant="standard"
                 label="Your Fusion Domain"
-                placeholder="JohnDoe"
+                placeholder="vitalik"
+                className="font-outfit"
                 ref={inputRef}
                 onChange={(e) => handleName(e)}
                 value={domain}
@@ -101,7 +106,7 @@ const LoginForm = () => {
                 variant="text"
                 color="blue-gray"
                 className={
-                  "flex items-center rounded-none border hover:bg-transparent active:bg-transparent border-x-0 border-t-0 border-blue-gray-200 px-3 py-0 text-sm font-bold normal-case"
+                  "flex items-center rounded-none border font-outfit hover:bg-transparent active:bg-transparent border-x-0 border-t-0 border-blue-gray-200 px-3 py-0 text-sm font-bold normal-case"
                 }
               >
                 .fusion.id
@@ -124,11 +129,17 @@ const LoginForm = () => {
           )}
 
           <Button
-            className="mt-6"
+            className="mt-6 font-outfit normal-case"
             fullWidth
-            disabled={!isUsed}
+            disabled={
+              domain.length <= 3 ||
+              domain.length > 20 ||
+              !isUsed ||
+              isLoading ||
+              isTyping
+            }
             onClick={() => {
-              router.push("/dashboard");
+              router.push("/dashboard?domain=" + domain);
             }}
           >
             Login

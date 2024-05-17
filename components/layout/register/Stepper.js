@@ -11,27 +11,31 @@ export default function Steps() {
 
   return (
     <div className="relative flex items-center justify-center">
-      <div className="w-80">
-        <Stepper activeStep={step} lineClassName="bg-gray-400">
+      <div className=" w-64">
+        <Stepper
+          activeStep={step}
+          lineClassName="bg-transparent"
+          activeLineClassName="bg-transparent"
+        >
           <Step
-            className="relative h-8 w-8 bg-gray-400 cursor-pointer"
+            className="relative h-2 w-20 bg-gray-400 cursor-pointer"
             onClick={() => dispatch(setStep(0))}
           >
-            <UserRound className="h-4 w-4" />
+            {/* <UserRound className="h-4 w-4" /> */}
           </Step>
 
           <Step
-            className="relative h-8 w-8 bg-gray-400 cursor-pointer"
+            className="relative h-2 w-20 bg-gray-400 cursor-pointer"
             onClick={() => dispatch(setStep(1))}
           >
-            <Lock className="h-4 w-4" />
+            {/* <Lock className="h-4 w-4" /> */}
           </Step>
 
           <Step
-            className="relative h-8 w-8 bg-gray-400 cursor-pointer"
+            className="relative h-2 w-20 bg-gray-400 cursor-pointer"
             onClick={() => dispatch(setStep(2))}
           >
-            <Mail className="h-4 w-4" />
+            {/* <Mail className="h-4 w-4" /> */}
           </Step>
         </Stepper>
       </div>

@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Card,
-  Input,
-  Checkbox,
-  Button,
-  Typography,
-} from "@material-tailwind/react";
+import { Card, Typography } from "@material-tailwind/react";
 
 import { useSelector } from "react-redux";
 
@@ -22,7 +16,11 @@ const SignupForm = () => {
   return (
     <Card color="transparent" shadow={false} className="w-fit mx-auto">
       <div className="p-5 bg-white rounded-xl">
-        <Typography variant="h4" color="blue-gray" className="text-center mb-6">
+        <Typography
+          variant="h4"
+          color="blue-gray"
+          className="text-center font-outfit mb-6"
+        >
           Signup to Fusion
         </Typography>
 
