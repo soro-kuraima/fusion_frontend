@@ -14,7 +14,7 @@ const SignupForm = () => {
   const step = useSelector((state) => state.signup.step);
 
   return (
-    <Card color="transparent" shadow={false} className="w-fit mx-auto">
+    <Card color="transparent" shadow={false} className="w-fit">
       <div className="p-5 bg-white rounded-xl">
         <Typography
           variant="h4"

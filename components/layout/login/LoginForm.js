@@ -78,7 +78,7 @@ const LoginForm = () => {
   }, [isTyping, domain]);
 
   return (
-    <Card color="transparent" shadow={false} className="w-fit mx-auto">
+    <Card color="transparent" shadow={false} className="w-fit mx-10">
       <div className="p-5 bg-white rounded-t-xl">
         <Typography
           variant="h4"
