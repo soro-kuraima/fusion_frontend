@@ -4,8 +4,13 @@ import { ethers } from "ethers";
 
 import baseChain from "@/utils/baseChain";
 import FusionProxyFactoryABI from "@/utils/contracts/FusionProxyFactory.json";
+import config from "@/utils/config";
+import { setCurrentChain } from "@/redux/slice/chainSlice";
+import { useDispatch } from "react-redux";
 
 export default function useWallet() {
+  const dispatch = useDispatch();
+
   const getFusion = async (domain) => {
     try {
       const provider = new ethers.providers.JsonRpcProvider(baseChain.rpcUrl);
@@ -26,5 +31,12 @@ export default function useWallet() {
     }
   };
 
-  return { getFusion };
+  const switchChain = async (chainId) => {
+    const chain = config.find((chain) => chain.chainId === chainId);
+
+    // Changes Requried here
+    dispatch(setCurrentChain(chain));
+  };
+
+  return { getFusion, switchChain };
 }

@@ -1,13 +1,13 @@
 const config = [
   {
     chainId: 43113,
-    chainName: "Avalanche Fuji",
+    chainName: "Fuji",
     isBase: true,
     rpcUrl: "https://avalanche-fuji-c-chain-rpc.publicnode.com",
     convert_id: "2781",
     id: "5805",
     symbol: "AVAX",
-    logo: "",
+    logo: "/tokens/avax-logo.svg",
     addresses: {
       Fusion: "0x3ED5EccFFD1afE3172A9DEeDeD795b479f95a841",
       FusionForwarder: "0x1Baf9847E474b1B548545b92F5186097DB4E77B1",
@@ -41,13 +41,13 @@ const config = [
   },
   {
     chainId: 80002,
-    chainName: "Polygon Amoy",
+    chainName: "Amoy",
     isBase: false,
     rpcUrl: "https://polygon-amoy-bor-rpc.publicnode.com",
     convert_id: "2781",
     id: "3890",
     symbol: "MATIC",
-    logo: "",
+    logo: "/tokens/matic-logo.svg",
     addresses: {
       Fusion: "0xd8c7f8D24d32C81641CBA0A294E35C22fcF38dFd",
       FusionForwarder: "0x843fE00Bec83abE55B5A2a02826b0B35e11f6d6d",
