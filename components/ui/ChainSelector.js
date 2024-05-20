@@ -8,7 +8,7 @@ export default function ChainSelector() {
   const currentChain = useSelector((state) => state.chain.currentChain);
 
   return (
-    <div className="flex w-fit items-center gap-3">
+    <div className="flex w-fit items-center gap-3 mx-auto">
       {config.map((chain) => (
         <ChainItem
           key={chain.chainId}
