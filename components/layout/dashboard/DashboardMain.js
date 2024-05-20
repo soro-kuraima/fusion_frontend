@@ -8,17 +8,17 @@ const DashboardMain = () => {
     <div className="space-y-1">
       <Balance />
 
-      <div className="bg-white py-8 p-16 md:px-20 rounded-b-xl flex justify-between md:justify-evenly">
+      <div className="bg-white py-6 p-16 md:px-20 rounded-b-xl flex justify-between">
         <RoundedGrayButton label="Receive">
-          <MoveDown size={24} />
+          <MoveDown size={20} />
         </RoundedGrayButton>
 
         <RoundedGrayButton label="Transfer">
-          <ArrowLeftRight size={24} />
+          <ArrowLeftRight size={20} />
         </RoundedGrayButton>
 
         <RoundedGrayButton label="History">
-          <History size={24} />
+          <History size={20} />
         </RoundedGrayButton>
       </div>
     </div>

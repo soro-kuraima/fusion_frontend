@@ -8,11 +8,11 @@ import DashboardMain from "@/components/layout/dashboard/DashboardMain";
 export default function Register() {
   return (
     <>
-      <section className="mt-10 space-y-4 max-w-xl mx-auto">
+      <div className="flex flex-col max-w-[29rem] w-full space-y-4">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-medium ">Fusion</h1>
 
-          <div className="flex space-x-4">
+          <div className="flex space-x-2">
             <Gas />
             <QR />
             <Profile />
@@ -21,7 +21,7 @@ export default function Register() {
 
         <DashboardMain />
         <CrossChain />
-      </section>
+      </div>
     </>
   );
 }
