@@ -9,6 +9,7 @@ import { setCurrentChain } from "@/redux/slice/chainSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setDeployed,
+  setGasCredit,
   setTokenBalanceData,
   setTokenConversionData,
   setWalletAddress,
@@ -25,6 +26,7 @@ export default function useWallet() {
   const walletAddress = useSelector((state) => state.user.walletAddress);
   const [wsProvider, setWsProvider] = useState(null);
   const tokenBalanceData = useSelector((state) => state.user.tokenBalanceData);
+  const [timeout, setTimeout] = useState(null);
 
   const getDomain = () => {
     const domain = searchParams.get("domain");
@@ -250,6 +252,36 @@ export default function useWallet() {
     dispatch(setTokenConversionData(conversionData));
   };
 
+  const loadGasCredit = async (domain) => {
+    try {
+      const response = await axios.get(
+        `${
+          process.env.NEXT_PUBLIC_BACKEND_URL
+        }/api/gasCredit/balance/${domain?.toLowerCase()}`
+      );
+
+      if (response.data.success) {
+        dispatch(setGasCredit(response.data.senderBalance));
+      } else {
+        dispatch(setGasCredit(0));
+      }
+    } catch (error) {
+      return 0;
+    }
+  };
+
+  const listenForCredits = async (domain) => {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+
+    const interval = setInterval(async () => {
+      await loadGasCredit(domain);
+    }, 10000);
+
+    setTimeout(interval);
+  };
+
   const switchChain = async (chainId) => {
     const chain = config.find((chain) => chain.chainId === chainId);
 
@@ -264,5 +296,7 @@ export default function useWallet() {
     getDomain,
     listenForBalance,
     loadConversionData,
+    loadGasCredit,
+    listenForCredits,
   };
 }

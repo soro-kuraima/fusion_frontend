@@ -5,8 +5,10 @@ import { Plus } from "lucide-react";
 import Image from "next/image";
 
 import React from "react";
+import { useSelector } from "react-redux";
 
 const Gas = () => {
+  const gasCredit = useSelector((state) => state.user.gasCredit);
   return (
     <div className="bg-white py-1 px-2 rounded-full flex items-center gap-2">
       <Image
@@ -18,7 +20,7 @@ const Gas = () => {
       />
 
       <div className="text-sm">
-        <span>10</span>
+        <span>{gasCredit.toFixed(2)}</span>
         <span className="ml-1 font-medium">GAS</span>
       </div>
 
