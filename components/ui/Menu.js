@@ -1,30 +1,47 @@
 "use client";
 
-import useWallet from "@/hooks/useWallet";
 import { Button } from "@material-tailwind/react";
-import { LayoutDashboard } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { LayoutDashboard, User } from "lucide-react";
 
-import React from "react";
+import { usePathname, useRouter } from "next/navigation";
+
+import useWallet from "@/hooks/useWallet";
 
 const Menu = () => {
-  const { getDomain } = useWallet();
   const router = useRouter();
-  return (
-    <Button
-      color="white"
-      className=" rounded-full p-1.5 aspect-square"
-      size="sm"
-      onClick={() => {
-        const domain = getDomain();
+  const pathname = usePathname();
 
-        if (domain) {
-          router.push(`/dashboard?domain=${domain}`);
-        }
-      }}
-    >
-      <LayoutDashboard size="20" />
-    </Button>
+  const { getDomain } = useWallet();
+
+  const handleClick = () => {
+    const domain = getDomain();
+
+    if (!domain) return;
+
+    if (pathname === "/profile") {
+      router.push(`/dashboard?domain=${domain}`);
+    }
+
+    if (pathname === "/dashboard") {
+      router.push(`/profile?domain=${domain}`);
+    }
+  };
+
+  return (
+    <>
+      <Button
+        color="white"
+        className=" rounded-full p-1.5 aspect-square"
+        size="sm"
+        onClick={handleClick}
+      >
+        {pathname === "/dashboard" ? (
+          <User size="20" />
+        ) : (
+          <LayoutDashboard size="20" />
+        )}
+      </Button>
+    </>
   );
 };
 
