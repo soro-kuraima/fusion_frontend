@@ -2,12 +2,12 @@
 
 import useWallet from "@/hooks/useWallet";
 import { Button } from "@material-tailwind/react";
-import { User } from "lucide-react";
+import { LayoutDashboard } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import React from "react";
 
-const Profile = () => {
+const Menu = () => {
   const { getDomain } = useWallet();
   const router = useRouter();
   return (
@@ -19,13 +19,13 @@ const Profile = () => {
         const domain = getDomain();
 
         if (domain) {
-          router.push(`/profile?domain=${domain}`);
+          router.push(`/dashboard?domain=${domain}`);
         }
       }}
     >
-      <User size="20" />
+      <LayoutDashboard size="20" />
     </Button>
   );
 };
 
-export default Profile;
+export default Menu;

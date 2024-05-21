@@ -24,6 +24,7 @@ export default function useWallet() {
   const searchParams = useSearchParams();
   const currentChain = useSelector((state) => state.chain.currentChain);
   const walletAddress = useSelector((state) => state.user.walletAddress);
+  const walletAddresses = useSelector((state) => state.user.walletAddresses);
   const [wsProvider, setWsProvider] = useState(null);
   const tokenBalanceData = useSelector((state) => state.user.tokenBalanceData);
   const [timeout, setTimeout] = useState(null);
@@ -285,7 +286,12 @@ export default function useWallet() {
   const switchChain = async (chainId) => {
     const chain = config.find((chain) => chain.chainId === chainId);
 
-    // Changes Requried here
+    const walletAddress = walletAddresses.find(
+      (address) => address.chainId === chainId
+    );
+
+    dispatch(setWalletAddress(walletAddress.address));
+
     dispatch(setCurrentChain(chain));
   };
 

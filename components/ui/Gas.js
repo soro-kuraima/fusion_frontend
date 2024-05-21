@@ -20,7 +20,7 @@ const Gas = () => {
       />
 
       <div className="text-sm">
-        <span>{gasCredit.toFixed(2)}</span>
+        <span>{gasCredit ? gasCredit.toFixed(2) : 0.0}</span>
         <span className="ml-1 font-medium">GAS</span>
       </div>
 
