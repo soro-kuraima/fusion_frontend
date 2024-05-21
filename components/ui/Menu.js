@@ -25,6 +25,10 @@ const Menu = () => {
     if (pathname === "/dashboard") {
       router.push(`/profile?domain=${domain}`);
     }
+
+    if (pathname === "/gas") {
+      router.push(`/dashboard?domain=${domain}`);
+    }
   };
 
   return (

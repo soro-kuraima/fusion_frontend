@@ -1,10 +1,16 @@
 "use client";
 
+import useWallet from "@/hooks/useWallet";
 import { Button } from "@material-tailwind/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const CrossChain = () => {
+  const router = useRouter();
+  const { getDomain } = useWallet();
+  const domain = getDomain();
+
   return (
     <section className="bg-black text-white p-8 font-normal text-base rounded-xl space-y-3 text-left relative overflow-hidden">
       <h3 className="text-left z-0">
@@ -13,7 +19,16 @@ const CrossChain = () => {
         Transactions with Gas Credits
       </h3>
 
-      <Button size="sm" className="rounded-full font-outfit z-10" color="white">
+      <Button
+        size="sm"
+        className="rounded-full font-outfit z-10"
+        color="white"
+        onClick={() => {
+          if (domain) {
+            router.push(`/gas?domain=${domain}`);
+          }
+        }}
+      >
         Explore
       </Button>
 

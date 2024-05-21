@@ -7,11 +7,13 @@ import Gas from "@/components/ui/Gas";
 import Menu from "@/components/ui/Menu";
 
 import ChainSelector from "@/components/ui/ChainSelector";
+import TokenModal from "@/components/modal/TokenModal";
 
 const mainLayout = ({ children }) => {
   return (
     <>
       <QRcodeModal />
+      <TokenModal />
 
       <WalletProvider>
         <main className="bg-gray-200 relative flex min-h-screen flex-col items-center px-2 py-10">
