@@ -1,11 +1,11 @@
 "use client";
 
-import { toggleQRModal } from "@/redux/slice/modalSlice";
-import { Button } from "@material-tailwind/react";
 import { LucideQrCode } from "lucide-react";
+import { Button } from "@material-tailwind/react";
 
-import React from "react";
 import { useDispatch } from "react-redux";
+
+import { toggleQRModal } from "@/redux/slice/modalSlice";
 
 const QR = () => {
   const dispatch = useDispatch();

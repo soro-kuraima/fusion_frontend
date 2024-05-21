@@ -1,9 +1,7 @@
 "use client";
 
-import { Button } from "@material-tailwind/react";
 import { User } from "lucide-react";
-
-import React from "react";
+import { Button } from "@material-tailwind/react";
 
 const Profile = () => {
   return (

@@ -8,7 +8,7 @@ const userSlice = createSlice({
     walletAddresses: null,
     tokenBalanceData: null,
     tokenConversionData: null,
-    gasCredit: null,
+    gasCredit: 0,
     isDeployed: true,
   },
 

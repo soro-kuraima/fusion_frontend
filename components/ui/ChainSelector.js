@@ -1,10 +1,12 @@
 "use client";
 
 import { useSelector } from "react-redux";
+
 import ChainItem from "./chainSelector/ChainItem";
+
 import config from "@/utils/config";
 
-export default function ChainSelector() {
+const ChainSelector = () => {
   const currentChain = useSelector((state) => state.chain.currentChain);
 
   return (
@@ -20,4 +22,6 @@ export default function ChainSelector() {
       ))}
     </div>
   );
-}
+};
+
+export default ChainSelector;

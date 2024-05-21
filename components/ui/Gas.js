@@ -1,14 +1,14 @@
 "use client";
 
-import { Button } from "@material-tailwind/react";
 import { Plus } from "lucide-react";
-import Image from "next/image";
+import { Button } from "@material-tailwind/react";
 
-import React from "react";
+import Image from "next/image";
 import { useSelector } from "react-redux";
 
 const Gas = () => {
   const gasCredit = useSelector((state) => state.user.gasCredit);
+
   return (
     <div className="bg-white py-1 px-2 rounded-full flex items-center gap-2">
       <Image

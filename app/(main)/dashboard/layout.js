@@ -1,10 +1,14 @@
-import ChainSelector from "@/components/ui/ChainSelector";
+import QRcodeModal from "@/components/modal/QRcodeModal";
 
 const DashboardLayout = ({ children }) => {
   return (
-    <main className="flex flex-col grow overflow-hidden w-full items-center justify-center my-10">
-      {children}
-    </main>
+    <>
+      <QRcodeModal />
+
+      <main className="flex flex-col grow overflow-hidden w-full items-center justify-center my-10">
+        {children}
+      </main>
+    </>
   );
 };
 
