@@ -8,10 +8,15 @@ import PubKey from "../ui/PubKey";
 import QRCodeGenerator from "../ui/QRCodeGenerator";
 
 import { toggleQRModal } from "@/redux/slice/modalSlice";
+import useWallet from "@/hooks/useWallet";
 
 const QRcodeModal = () => {
   const dispatch = useDispatch();
   const open = useSelector((state) => state.modal.QRModal);
+  const walletAddress = useSelector((state) => state.user.walletAddress);
+  const currentChain = useSelector((state) => state.chain.currentChain);
+  const { getDomain } = useWallet();
+  const domain = getDomain();
 
   const handleOpen = () => {
     dispatch(toggleQRModal());
@@ -26,13 +31,21 @@ const QRcodeModal = () => {
         mount: { scale: 1, y: 0 },
         unmount: { scale: 0.9, y: -100 },
       }}
+      className="font-outfit bg-transparent items-center justify-center flex shadow-none"
     >
-      <DialogBody className="text-center space-y-4 py-10">
+      <DialogBody className="text-center space-y-4 py-5 font-outfit bg-white rounded-2xl w-fit px-10">
+        <p className="text-xs">
+          <span className="text-lg font-bold text-black">
+            {domain ? domain : "-"}
+          </span>
+          .fusion.id
+        </p>
+
         <div className="w-fit mx-auto">
-          <QRCodeGenerator value="https://www.google.com" />
+          <QRCodeGenerator value={walletAddress} />
         </div>
-        <p className="text-xl text-medium">noober@Fusion.id</p>
-        <PubKey pubkey="0x1234567890abcdef1234567890abcdef" />
+
+        <PubKey pubkey={walletAddress} logo={currentChain?.logo} />
       </DialogBody>
     </Dialog>
   );

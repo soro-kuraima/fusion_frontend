@@ -33,7 +33,7 @@ const CopyButton = ({ text }) => {
 
   return (
     <button onClick={handleClick}>
-      {isCopied ? <Check size={16} /> : <Copy size={16} />}
+      {isCopied ? <Check size={16} /> : <Copy size={13} />}
     </button>
   );
 };

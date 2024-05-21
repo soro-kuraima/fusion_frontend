@@ -2,7 +2,7 @@ import { QRCodeSVG } from "qrcode.react";
 
 const QRCodeGenerator = ({
   value,
-  size = 256,
+  size = 175,
   level = "H",
   bgColor = "transparent",
   fgColor = "url(#gradient)",
@@ -24,8 +24,8 @@ const QRCodeGenerator = ({
         fgColor={fgColor}
         imageSettings={{
           src: "logoBlack.svg",
-          height: 48,
-          width: 48,
+          height: 38,
+          width: 38,
           excavate: true,
         }}
       />
