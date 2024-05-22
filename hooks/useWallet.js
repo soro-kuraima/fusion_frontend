@@ -7,6 +7,7 @@ import FusionProxyFactoryABI from "@/utils/contracts/FusionProxyFactory.json";
 import config from "@/utils/config";
 import { setCurrentChain } from "@/redux/slice/chainSlice";
 import { useDispatch, useSelector } from "react-redux";
+import FusionABI from "@/utils/contracts/Fusion.json";
 import {
   setDeployed,
   setGasCredit,
@@ -20,6 +21,7 @@ import { useState } from "react";
 import axios from "axios";
 import { setUpdates } from "@/redux/slice/gasSlice";
 import { setToken } from "@/redux/slice/selectorSlice";
+import { setEmail, setType, setWallet } from "@/redux/slice/proofSlice";
 
 export default function useWallet() {
   const dispatch = useDispatch();
@@ -30,6 +32,7 @@ export default function useWallet() {
   const [wsProvider, setWsProvider] = useState(null);
   const tokenBalanceData = useSelector((state) => state.user.tokenBalanceData);
   const [timeout, setTimeout] = useState(null);
+  const wallet = useSelector((state) => state.proof.wallet);
 
   const getDomain = () => {
     const domain = searchParams.get("domain");
@@ -315,6 +318,58 @@ export default function useWallet() {
     dispatch(setCurrentChain(chain));
   };
 
+  const loadPublicStorage = async () => {
+    try {
+      const provider = new ethers.providers.JsonRpcProvider(
+        currentChain.rpcUrl
+      );
+
+      const fusion = new ethers.Contract(walletAddress, FusionABI, provider);
+
+      const publicStorage = await fusion.PublicStorage();
+
+      if (publicStorage === "0x") {
+        return;
+      }
+
+      const abiCoder = new ethers.utils.AbiCoder();
+      const decoded = abiCoder.decode(["string", "string"], publicStorage);
+      dispatch(setType(decoded[0]));
+      dispatch(setEmail(decoded[1]));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const initializeProofWallet = async () => {
+    if (!wallet) {
+      const newWallet = ethers.Wallet.createRandom();
+
+      dispatch(setWallet(newWallet));
+
+      return newWallet;
+    }
+
+    return wallet;
+  };
+
+  const getNonce = async () => {
+    try {
+      const provider = new ethers.providers.JsonRpcProvider(
+        currentChain.rpcUrl
+      );
+
+      const Fusion = new ethers.Contract(walletAddress, FusionABI, provider);
+
+      const nonce = await Fusion.getNonce();
+
+      return nonce;
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
+  };
+
   return {
     getFusion,
     switchChain,
@@ -325,5 +380,8 @@ export default function useWallet() {
     loadGasCredit,
     listenForCredits,
     getGasUpdates,
+    loadPublicStorage,
+    initializeProofWallet,
+    getNonce,
   };
 }

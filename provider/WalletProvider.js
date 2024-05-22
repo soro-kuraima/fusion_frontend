@@ -12,6 +12,7 @@ export default function WalletProvider({ children }) {
     loadConversionData,
     listenForCredits,
     getGasUpdates,
+    loadPublicStorage,
   } = useWallet();
   const currentChain = useSelector((state) => state.chain.currentChain);
   const walletAddress = useSelector((state) => state.user.walletAddress);
@@ -30,6 +31,7 @@ export default function WalletProvider({ children }) {
     if (currentChain && walletAddress) {
       listenForBalance();
       loadConversionData();
+      loadPublicStorage();
     }
   }, [currentChain, walletAddress]);
 

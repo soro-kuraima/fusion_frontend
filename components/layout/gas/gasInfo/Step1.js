@@ -34,6 +34,7 @@ export default function Step1() {
 
         <Image
           src="/FusionGas.png"
+          alt="Fusion Gas"
           width={400}
           height={50}
           className="absolute -top-12 -right-1/3 z-10 opacity-60"

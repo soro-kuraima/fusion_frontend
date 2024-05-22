@@ -8,12 +8,14 @@ import Menu from "@/components/ui/Menu";
 
 import ChainSelector from "@/components/ui/ChainSelector";
 import TokenModal from "@/components/modal/TokenModal";
+import TxProofModal from "@/components/modal/TxProofModal";
 
 const mainLayout = ({ children }) => {
   return (
     <>
       <QRcodeModal />
       <TokenModal />
+      <TxProofModal />
 
       <WalletProvider>
         <main className="bg-gray-200 relative flex min-h-screen flex-col items-center px-2 py-10">
