@@ -11,6 +11,7 @@ export default function WalletProvider({ children }) {
     listenForBalance,
     loadConversionData,
     listenForCredits,
+    getGasUpdates,
   } = useWallet();
   const currentChain = useSelector((state) => state.chain.currentChain);
   const walletAddress = useSelector((state) => state.user.walletAddress);
@@ -21,6 +22,7 @@ export default function WalletProvider({ children }) {
     if (domain) {
       loadAddresses(domain + ".fusion.id");
       listenForCredits(domain + ".fusion.id");
+      getGasUpdates();
     }
   }, []);
 
