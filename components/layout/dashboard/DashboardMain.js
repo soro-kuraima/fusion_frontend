@@ -17,7 +17,7 @@ const DashboardMain = () => {
           <ArrowLeftRight size={20} />
         </RoundedGrayButton>
 
-        <RoundedGrayButton label="History">
+        <RoundedGrayButton label="History" href="/transactions">
           <History size={20} />
         </RoundedGrayButton>
       </div>

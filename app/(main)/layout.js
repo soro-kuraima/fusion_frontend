@@ -19,7 +19,7 @@ const mainLayout = ({ children }) => {
         <main className="bg-gray-200 relative flex min-h-screen flex-col items-center px-2 py-10">
           <ChainSelector />
 
-          <div className="flex flex-col max-w-[29rem] w-full gap-y-4">
+          <div className="flex flex-col max-w-[29rem] w-full gap-y-4 flex-grow">
             <div className="flex justify-between items-center mt-16">
               <h1 className="text-3xl font-medium ">Fusion</h1>
 
