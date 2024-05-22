@@ -18,6 +18,8 @@ import {
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import axios from "axios";
+import { setUpdates } from "@/redux/slice/gasSlice";
+import { setToken } from "@/redux/slice/selectorSlice";
 
 export default function useWallet() {
   const dispatch = useDispatch();
@@ -283,12 +285,30 @@ export default function useWallet() {
     setTimeout(interval);
   };
 
+  const getGasUpdates = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/gasCredit/getPrice`
+      );
+
+      if (response.data.success) {
+        dispatch(setUpdates(response.data.updates));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const switchChain = async (chainId) => {
     const chain = config.find((chain) => chain.chainId === chainId);
 
     const walletAddress = walletAddresses.find(
       (address) => address.chainId === chainId
     );
+
+    dispatch(setToken({ token: chain.tokens[0], index: 0 }));
+
+    dispatch(setToken({ token: chain.tokens[0], index: 1 }));
 
     dispatch(setWalletAddress(walletAddress.address));
 
@@ -304,5 +324,6 @@ export default function useWallet() {
     loadConversionData,
     loadGasCredit,
     listenForCredits,
+    getGasUpdates,
   };
 }

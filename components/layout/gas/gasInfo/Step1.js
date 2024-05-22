@@ -4,11 +4,24 @@ import { Button } from "@material-tailwind/react";
 import Image from "next/image";
 import TokenSelector from "@/components/ui/TokenSelector";
 import AmountButton from "../AmountButton";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setStep } from "@/redux/slice/gasSlice";
+import { ChevronRight } from "lucide-react";
 
 export default function Step1() {
   const dispatch = useDispatch();
+  const [selectedToken] = useSelector((state) => state.selector.token);
+  const currentChain = useSelector((state) => state.chain.currentChain);
+  const amount = useSelector((state) => state.gas.amount);
+  const updates = useSelector((state) => state.gas.updates);
+
+  const selectedUpdate = updates?.find(
+    (update) => update.chainId === currentChain.chainId
+  );
+  const selectedPrice = selectedUpdate?.tokens.find(
+    (update) => update.address === selectedToken?.address
+  );
+
   return (
     <>
       <div className="bg-gray-200 w-full p-4 py-2 mb-2 rounded-lg relative overflow-hidden">
@@ -43,18 +56,25 @@ export default function Step1() {
 
       <div className="flex items-center justify-between w-full mt-2">
         <p className="text-base text-gray-500">Total Cost</p>
-        <p className="text-base font-medium">2 AVAX</p>
+        <p className="text-base font-medium">
+          {selectedToken && selectedPrice
+            ? (selectedPrice?.creditCost * amount) /
+              10 ** selectedToken?.decimals
+            : "-"}{" "}
+          {selectedToken?.name}
+        </p>
       </div>
 
       <Button
         color="black"
         size="sm"
-        className="rounded-lg font-outfit normal-case w-full py-3 mt-1"
+        className="rounded-lg font-outfit normal-case w-full py-3 mt-1 font-light flex items-center justify-center"
         onClick={() => {
           dispatch(setStep(1));
         }}
       >
         Next
+        <ChevronRight size={16} className="-mr-2 ml-2" />
       </Button>
     </>
   );
