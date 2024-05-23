@@ -6,7 +6,7 @@ import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function TokenSelector({ index }) {
+export default function TokenSelector({ index, className = "" }) {
   const token = useSelector((state) => state.selector.token);
   const selectedToken = token ? token[index] : null;
   const dispatch = useDispatch();
@@ -14,7 +14,10 @@ export default function TokenSelector({ index }) {
   return (
     <Button
       size="sm"
-      className="w-full flex items-center justify-between font-outfit text-sm font-normal rounded-lg py-3 "
+      className={
+        "w-full flex items-center justify-between font-outfit text-sm font-normal rounded-lg py-3 " +
+        className
+      }
       variant="outlined"
       onClick={() => {
         dispatch(setTokenIndex(index));

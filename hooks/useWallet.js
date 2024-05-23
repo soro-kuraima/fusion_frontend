@@ -281,6 +281,8 @@ export default function useWallet() {
       clearTimeout(timeout);
     }
 
+    await loadGasCredit(domain);
+
     const interval = setInterval(async () => {
       await loadGasCredit(domain);
     }, 10000);

@@ -37,7 +37,7 @@ export default function Step2() {
 
   var timeout = null;
 
-  const { estimateGas, buy, verifyTransaction } = useBuy();
+  const { estimateGas, buy } = useBuy();
 
   const handleEstimateGas = async () => {
     await estimateGas();
@@ -94,10 +94,10 @@ export default function Step2() {
 
   return (
     <>
-      <div className="bg-gray-300 w-full rounded-lg flex flex-col gap-3 p-4">
+      <div className="bg-gray-300 w-full rounded-lg flex flex-col gap-2 p-4">
         <div className="flex justify-between items-center w-full">
-          <p className="text-base font-base text-gray-600">Pay</p>
-          <p className="text-sm font-semibold text-gray-800">
+          <p className="text-sm font-base text-gray-600">Pay</p>
+          <p className="text-xs font-semibold text-gray-800">
             {selectedToken && selectedPrice
               ? (selectedPrice?.creditCost * amount) /
                 10 ** selectedToken?.decimals
@@ -106,8 +106,8 @@ export default function Step2() {
           </p>
         </div>
         <div className="flex justify-between items-center w-full">
-          <p className="text-base font-base text-gray-600">Network Fee</p>
-          <p className="text-sm font-semibold text-gray-800 flex items-center">
+          <p className="text-sm font-base text-gray-600">Network Fee</p>
+          <p className="text-xs font-semibold text-gray-800 flex items-center">
             {isLoading ? (
               <Loader2 size={14} className="animate-spin mr-2" />
             ) : gasAmount ? (
@@ -119,9 +119,9 @@ export default function Step2() {
           </p>
         </div>
         <div className="flex justify-between w-full">
-          <p className="text-base font-base text-gray-600">Total</p>
+          <p className="text-sm font-base text-gray-600">Total</p>
           <div className="flex flex-col">
-            <p className="text-sm font-semibold text-right text-gray-800 flex items-center justify-end">
+            <p className="text-xs font-semibold text-right text-gray-800 flex items-center justify-end">
               {selectedToken === gasToken ? (
                 isLoading ? (
                   <Loader2 size={14} className="animate-spin mr-2" />

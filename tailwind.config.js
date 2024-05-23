@@ -16,6 +16,7 @@ module.exports = withMT({
 
       fontFamily: {
         outfit: ["var(--font-outfit)"],
+        sans: ["var(--font-outfit)"],
       },
 
       colors: {},

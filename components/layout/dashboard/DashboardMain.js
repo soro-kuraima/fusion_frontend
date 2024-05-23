@@ -13,7 +13,7 @@ const DashboardMain = () => {
           <MoveDown size={20} />
         </RoundedGrayButton>
 
-        <RoundedGrayButton label="Transfer">
+        <RoundedGrayButton label="Transfer" href="/transfer">
           <ArrowLeftRight size={20} />
         </RoundedGrayButton>
 

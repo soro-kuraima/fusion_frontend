@@ -5,9 +5,14 @@ import { Button } from "@material-tailwind/react";
 
 import Image from "next/image";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
+import useWallet from "@/hooks/useWallet";
 
 const Gas = () => {
   const gasCredit = useSelector((state) => state.user.gasCredit);
+  const router = useRouter();
+  const { getDomain } = useWallet();
+  const domain = getDomain();
 
   return (
     <div className="bg-white py-1 px-2 rounded-full flex items-center gap-2">
@@ -27,6 +32,7 @@ const Gas = () => {
       <Button
         size="sm"
         className="rounded-full p-0 h-5 w-5 flex items-center justify-center text-lg font-light"
+        onClick={() => router.push("/gas?domain=" + domain)}
       >
         <Plus className="w-4 h-4" />
       </Button>
