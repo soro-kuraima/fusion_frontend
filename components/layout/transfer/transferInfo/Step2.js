@@ -2,9 +2,11 @@
 
 import TokenSelector from "@/components/ui/TokenSelector";
 import useBuy from "@/hooks/useBuy";
+import useExecute from "@/hooks/useExecute";
 import useWallet from "@/hooks/useWallet";
 import { setTxProof, toggleProofDrawer } from "@/redux/slice/proofSlice";
 import { setGasless, setStep } from "@/redux/slice/transferSlice";
+import { formatAddress } from "@/utils/FormatAddress";
 import { Button } from "@material-tailwind/react";
 import { Check, ChevronLeft, Loader2 } from "lucide-react";
 import Image from "next/image";
@@ -20,27 +22,46 @@ export default function Step2() {
   const [selectedToken, gasToken] = useSelector(
     (state) => state.selector.token
   );
+  const recipient = useSelector((state) => state.transfer.recipient);
   const router = useRouter();
   const { getDomain } = useWallet();
   const domain = getDomain();
-  const isActive = useSelector((state) => state.transfer.gasless);
+  const gasless = useSelector((state) => state.transfer.gasless);
+  const amount = useSelector((state) => state.transfer.amount);
+  const {} = useExecute();
 
   return (
     <>
       <div className="bg-gray-300 w-full rounded-lg flex flex-col gap-2 p-4">
         <div className="flex justify-between items-center w-full">
           <p className="text-sm font-base text-gray-600">Recipient</p>
-          <p className="text-xs font-semibold text-gray-800">0x1234...6789</p>
+          <p className="text-xs font-semibold text-gray-800">
+            {recipient && formatAddress(recipient)}
+          </p>
         </div>
         <div className="flex justify-between items-center w-full">
           <p className="text-sm font-base text-gray-600">Pay</p>
-          <p className="text-xs font-semibold text-gray-800">0 AVAX</p>
+          <p className="text-xs font-semibold text-gray-800">
+            {amount?.toFixed(4)} {selectedToken?.name}
+          </p>
         </div>
         <div className="flex justify-between items-center w-full">
           <p className="text-sm font-base text-gray-600">Network Fee</p>
-          <p className="text-xs font-semibold text-gray-800 flex items-center">
-            0 AVAX
-          </p>
+          <div className="text-xs font-semibold text-gray-800 flex items-center">
+            0{" "}
+            {gasless ? (
+              <div
+                className="w-5 h-5"
+                style={{
+                  backgroundColor: "black",
+                  maskImage: "url(/tokens/gas-logo.svg)",
+                  maskSize: "cover",
+                }}
+              ></div>
+            ) : (
+              gasToken?.name
+            )}
+          </div>
         </div>
         <div className="flex justify-between w-full">
           <p className="text-sm font-base text-gray-600">Total</p>
@@ -48,10 +69,22 @@ export default function Step2() {
             <p className="text-xs font-semibold text-right text-gray-800 flex items-center justify-end">
               0 AVAX
             </p>
-            {selectedToken !== gasToken && (
-              <p className="text-xs text-right font-semibold text-gray-800 flex items-center justify-end">
-                + 2 USDC
-              </p>
+            {(selectedToken !== gasToken || gasless) && (
+              <div className="text-xs text-right font-semibold text-gray-800 flex items-center justify-end">
+                + 0{" "}
+                {gasless ? (
+                  <div
+                    className="w-5 h-5"
+                    style={{
+                      backgroundColor: "black",
+                      maskImage: "url(/tokens/gas-logo.svg)",
+                      maskSize: "cover",
+                    }}
+                  ></div>
+                ) : (
+                  gasToken?.name
+                )}
+              </div>
             )}
           </div>
         </div>
@@ -62,8 +95,8 @@ export default function Step2() {
           size="sm"
           className="w-full flex items-center justify-center font-outfit text-xs font-normal rounded-lg py-3 "
           style={{
-            backgroundColor: !isActive ? "black" : "#eeeeee",
-            color: !isActive ? "white" : "black",
+            backgroundColor: !gasless ? "black" : "#eeeeee",
+            color: !gasless ? "white" : "black",
           }}
           onClick={() => {
             dispatch(setGasless(false));
@@ -76,8 +109,8 @@ export default function Step2() {
           size="sm"
           className="w-full flex items-center justify-center font-outfit text-xs font-normal rounded-lg py-3 "
           style={{
-            backgroundColor: isActive ? "black" : "#eeeeee",
-            color: isActive ? "white" : "black",
+            backgroundColor: gasless ? "black" : "#eeeeee",
+            color: gasless ? "white" : "black",
           }}
           onClick={() => {
             dispatch(setGasless(true));
@@ -87,7 +120,7 @@ export default function Step2() {
           <div
             className="w-5 h-5"
             style={{
-              backgroundColor: isActive ? "#FFD700" : "gray",
+              backgroundColor: gasless ? "#FFD700" : "gray",
               maskImage: "url(/tokens/gas-logo.svg)",
               maskSize: "cover",
             }}
@@ -95,7 +128,7 @@ export default function Step2() {
         </Button>
       </div>
 
-      {!isActive && (
+      {!gasless && (
         <>
           <div className="flex w-full items-center justify-center space-x-4">
             <div className="mt-2 h-0.5 w-full bg-gray-400"></div>
@@ -109,7 +142,7 @@ export default function Step2() {
         </>
       )}
 
-      {isActive && (
+      {gasless && (
         <div className="bg-gray-200 w-full p-4 py-2 -mb-1 mt-3 rounded-lg relative overflow-hidden">
           <p className="text-lg font-medium z-20">About</p>
           <p className="text-xs z-20 relative w-[85%] font-light">
