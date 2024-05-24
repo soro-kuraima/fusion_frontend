@@ -1,4 +1,4 @@
-import { ArrowLeftRight, History, MoveDown } from "lucide-react";
+import { ArrowLeftRight, Bolt, History } from "lucide-react";
 
 import Balance from "@/components/layout/dashboard/Balance";
 import RoundedGrayButton from "@/components/ui/RoundedGrayButton";
@@ -9,16 +9,16 @@ const DashboardMain = () => {
       <Balance />
 
       <div className="bg-white py-6 p-16 md:px-20 rounded-b-xl flex justify-between">
-        <RoundedGrayButton label="Receive">
-          <MoveDown size={20} />
-        </RoundedGrayButton>
-
         <RoundedGrayButton label="Transfer" href="/transfer">
           <ArrowLeftRight size={20} />
         </RoundedGrayButton>
 
         <RoundedGrayButton label="History" href="/transactions">
           <History size={20} />
+        </RoundedGrayButton>
+
+        <RoundedGrayButton label="Settings" href="/settings">
+          <Bolt size={20} />
         </RoundedGrayButton>
       </div>
     </div>
