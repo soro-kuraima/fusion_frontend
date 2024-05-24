@@ -1,11 +1,15 @@
 "use client";
 
 import TokenSelector from "@/components/ui/TokenSelector";
-import useBuy from "@/hooks/useBuy";
 import useExecute from "@/hooks/useExecute";
 import useWallet from "@/hooks/useWallet";
 import { setTxProof, toggleProofDrawer } from "@/redux/slice/proofSlice";
-import { setGasless, setStep } from "@/redux/slice/transferSlice";
+import {
+  setAmount,
+  setGasAmount,
+  setGasless,
+  setStep,
+} from "@/redux/slice/transferSlice";
 import { formatAddress } from "@/utils/FormatAddress";
 import { Button } from "@material-tailwind/react";
 import { Check, ChevronLeft, Loader2 } from "lucide-react";
@@ -28,7 +32,61 @@ export default function Step2() {
   const domain = getDomain();
   const gasless = useSelector((state) => state.transfer.gasless);
   const amount = useSelector((state) => state.transfer.amount);
-  const {} = useExecute();
+  const { estimateGas, execute } = useExecute();
+  const walletAddress = useSelector((state) => state.user.walletAddress);
+  const gasAmount = useSelector((state) => state.transfer.gasAmount);
+  const [isLoading, setIsLoading] = useState(false);
+  const currentChain = useSelector((state) => state.chain.currentChain);
+
+  var timeout = null;
+
+  const handleExecute = async () => {
+    console.log;
+    toast.promise(
+      () =>
+        execute(
+          currentChain,
+          amount,
+          selectedToken,
+          gasToken,
+          recipient,
+          txProof,
+          gasless,
+          walletAddress
+        ),
+      {
+        loading: "Processing...",
+      }
+    );
+
+    dispatch(setTxProof(null));
+    dispatch(setStep(0));
+    dispatch(setAmount(0));
+  };
+
+  const handleEstimateGas = async () => {
+    await estimateGas();
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    if (selectedToken && gasToken && amount && walletAddress && txProof) {
+      clearTimeout(timeout);
+      setIsLoading(true);
+
+      timeout = setTimeout(() => {
+        handleEstimateGas(abortController.signal);
+      }, 1000);
+    } else {
+      dispatch(setGasAmount(null));
+    }
+
+    return () => {
+      abortController.abort();
+      clearTimeout(timeout);
+    };
+  }, [selectedToken, gasToken, amount, walletAddress, gasless, txProof]);
 
   return (
     <>
@@ -42,13 +100,19 @@ export default function Step2() {
         <div className="flex justify-between items-center w-full">
           <p className="text-sm font-base text-gray-600">Pay</p>
           <p className="text-xs font-semibold text-gray-800">
-            {amount?.toFixed(4)} {selectedToken?.name}
+            {Number(amount)?.toFixed(4)} {selectedToken?.name}
           </p>
         </div>
         <div className="flex justify-between items-center w-full">
           <p className="text-sm font-base text-gray-600">Network Fee</p>
           <div className="text-xs font-semibold text-gray-800 flex items-center">
-            0{" "}
+            {isLoading ? (
+              <Loader2 size={14} className="animate-spin mr-2" />
+            ) : gasAmount ? (
+              (gasAmount / 10 ** 18).toFixed(5)
+            ) : (
+              "-"
+            )}{" "}
             {gasless ? (
               <div
                 className="w-5 h-5"
@@ -67,11 +131,31 @@ export default function Step2() {
           <p className="text-sm font-base text-gray-600">Total</p>
           <div className="flex flex-col">
             <p className="text-xs font-semibold text-right text-gray-800 flex items-center justify-end">
-              0 AVAX
+              {selectedToken === gasToken && !gasless ? (
+                isLoading ? (
+                  <Loader2 size={14} className="animate-spin mr-2" />
+                ) : selectedToken && gasAmount ? (
+                  Number(Number(amount) + Number(gasAmount) / 10 ** 18).toFixed(
+                    5
+                  )
+                ) : (
+                  "- "
+                )
+              ) : (
+                Number(amount)?.toFixed(4)
+              )}{" "}
+              {selectedToken?.name}
             </p>
             {(selectedToken !== gasToken || gasless) && (
               <div className="text-xs text-right font-semibold text-gray-800 flex items-center justify-end">
-                + 0{" "}
+                +{" "}
+                {isLoading ? (
+                  <Loader2 size={14} className="animate-spin mr-1 ml-1" />
+                ) : gasAmount ? (
+                  (gasAmount / 10 ** 18).toFixed(5)
+                ) : (
+                  "-"
+                )}{" "}
                 {gasless ? (
                   <div
                     className="w-5 h-5"
@@ -189,7 +273,9 @@ export default function Step2() {
           color="black"
           size="sm"
           className="rounded-lg font-outfit normal-case w-full py-3 mt-2 font-light flex items-center justify-center"
-          onClick={() => {}}
+          onClick={() => {
+            handleExecute();
+          }}
           disabled={!type}
         >
           Confirm Transaction <Check size={16} className="ml-2 animate-pulse" />

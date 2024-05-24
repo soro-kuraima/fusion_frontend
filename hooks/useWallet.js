@@ -197,7 +197,7 @@ export default function useWallet() {
         WsProvider
       );
 
-      contract.on("Transfer", (from, to, value) => {
+      contract.on("Transfer", async (from, to, value) => {
         if (from !== walletAddress && to !== walletAddress) {
           return;
         }
@@ -206,11 +206,13 @@ export default function useWallet() {
           return;
         }
 
+        const currentBalance = await contract.balanceOf(walletAddress);
+
         const balanceData = tokenBalanceData.map((balance) => {
           if (balance.address === token.address) {
             return {
               ...balance,
-              balance: Number(value),
+              balance: Number(currentBalance),
             };
           } else {
             return balance;

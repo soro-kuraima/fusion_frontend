@@ -6,7 +6,7 @@ const transferSlice = createSlice({
   initialState: {
     step: 0,
     amount: 0,
-    recipient: null,
+    recipient: "",
     gasless: false,
     gasAmount: null,
   },

@@ -173,7 +173,10 @@ export default function Step1() {
           shrink={true}
           value={amount}
           onChange={(e) => {
-            dispatch(setAmount(e.target.value));
+            const decimalRegex = /^[0-9]*\.?[0-9]*$/;
+            if (e.target.value.match(decimalRegex)) {
+              dispatch(setAmount(e.target.value));
+            }
           }}
         />
         <div className="absolute top-[0.91rem] right-2">
