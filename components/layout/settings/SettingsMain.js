@@ -1,8 +1,9 @@
 "use client";
 import useWallet from "@/hooks/useWallet";
 import { Button } from "@material-tailwind/react";
-import { ChevronDown, ChevronUp, KeyRound, Loader2, Lock } from "lucide-react";
+import { ChevronDown, KeyRound, Loader2, Lock } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -14,6 +15,7 @@ export default function SettingsMain() {
   const [nonce, setNonce] = useState(0);
   const walletAddress = useSelector((state) => state.user.walletAddress);
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
   const handleNonce = async () => {
     try {
@@ -40,16 +42,22 @@ export default function SettingsMain() {
         <p className=" font-normal text-sm text-gray-700">Settings</p>
       </div>
 
-      <div
-        className="flex flex-col items-center -mt-2 justify-center gap-3 bg-white p-8 py-5 font-outfit rounded-b-xl pb-7 cursor-pointer"
-        onClick={() => {
-          setIsOpen(!isOpen);
-        }}
-      >
-        <div className="w-full gap-3 flex flex-col p-4 bg-gray-200 rounded-2xl px-5">
+      <div className="flex flex-col items-center -mt-2 justify-center gap-3 bg-white p-8 py-5 font-outfit rounded-b-xl pb-7">
+        <div
+          className="w-full gap-3 flex flex-col p-4 bg-blue-50 rounded-2xl px-5 cursor-pointer "
+          onClick={() => {
+            setIsOpen(!isOpen);
+          }}
+        >
           <div className="flex justify-between w-full mb-1 items-center">
-            <p className="font-bold">Account Details</p>
-            {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+            <p className=" font-medium">Account Details</p>
+            <ChevronDown
+              size={20}
+              style={{
+                transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                transition: "transform 0.3s",
+              }}
+            />
           </div>
 
           {isOpen && (
@@ -99,19 +107,23 @@ export default function SettingsMain() {
           )}
         </div>
 
-        <Button className="w-full h-[5.5rem] mt-2 normal-case rounded-xl flex items-center gap-3  px-4 py-4 group">
-          <div className="w-14 h-full bg-white rounded-lg flex items-center justify-center">
+        <Button
+          variant="outlined"
+          className="w-full h-[5.5rem] mt-2 normal-case rounded-xl flex items-center gap-3  px-4 py-4 group"
+          onClick={() => router.push("/recover?domain=" + domain)}
+        >
+          <div className="w-14 h-full border-[1px] border-black rounded-lg flex items-center justify-center group-hover:bg-black transition-colors duration-300">
             <KeyRound
               size={30}
-              className="text-black group-hover:animate-pulse"
+              className="text-black group-hover:animate-pulse group-hover:text-white transition-colors duration-300"
             />
           </div>
 
           <div className="flex flex-col text-left w-60">
-            <p className="text-xs text-white font-light">
+            <p className="text-xs text-black font-light">
               Change Authentication
             </p>
-            <p className="text-xs text-gray-500 mt-1 font-light">
+            <p className="text-xs text-gray-700 mt-1 font-light">
               Forgot your password or lost your passkey. Click here to reset
               your authentication.
             </p>
@@ -120,20 +132,21 @@ export default function SettingsMain() {
 
         <Button
           variant="outlined"
-          className="w-full h-[5.5rem] normal-case border-red-400 rounded-xl flex items-center gap-3  px-4 py-4 group"
+          className="w-full h-[5.5rem] normal-case mt-1 border-red-600 rounded-xl flex items-center gap-3  px-4 py-4 group"
+          onClick={() => router.push("/change?domain=" + domain)}
         >
-          <div className="w-14 h-full border-red-400 border-[1px] rounded-lg flex items-center justify-center">
+          <div className="w-14 h-full border-red-600 border-[1px] rounded-lg flex items-center justify-center transition-colors duration-300 group-hover:bg-red-600">
             <Lock
               size={30}
-              className="text-red-400 group-hover:animate-pulse"
+              className="text-red-600 group-hover:animate-pulse transition-colors duration-300 group-hover:text-white"
             />
           </div>
 
           <div className="flex flex-col text-left w-60">
-            <p className="text-xs text-red-500 font-light">
+            <p className="text-xs text-red-600 font-light">
               Change Email Address
             </p>
-            <p className="text-xs text-red-500 mt-1 font-light">
+            <p className="text-xs text-red-600 mt-1 font-light">
               This requires OTP verification of both the email addresses.
             </p>
           </div>

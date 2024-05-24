@@ -2,6 +2,7 @@
 
 import { formatAmount } from "@/utils/FormatAmount";
 import { Button } from "@material-tailwind/react";
+import { Plus } from "lucide-react";
 
 import { useEffect, useState } from "react";
 
@@ -47,7 +48,7 @@ const Balance = () => {
           size="sm"
           className="rounded-full p-0 h-6 w-6 flex items-center justify-center text-2xl font-light"
         >
-          +
+          <Plus className="w-4 h-4" />
         </Button>
       </div>
     </div>

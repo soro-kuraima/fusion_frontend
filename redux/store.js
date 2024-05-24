@@ -9,7 +9,9 @@ import modalSlice from "./slice/modalSlice.js";
 import gasSlice from "./slice/gasSlice.js";
 import selectorSlice from "./slice/selectorSlice.js";
 import proofSlice from "./slice/proofSlice.js";
+import recoverySlice from "./slice/recoverySlice.js";
 import transferSlice from "./slice/transferSlice.js";
+import changeSlice from "./slice/changeSlice.js";
 
 export const store = configureStore({
   reducer: {
@@ -21,6 +23,8 @@ export const store = configureStore({
     selector: selectorSlice,
     proof: proofSlice,
     transfer: transferSlice,
+    recovery: recoverySlice,
+    change: changeSlice,
   },
 
   middleware: (getDefaultMiddleware) =>
