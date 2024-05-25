@@ -5,7 +5,7 @@ const recoverySlice = createSlice({
 
   initialState: {
     step: 0,
-    password: null,
+    password: "",
     passkey: null,
     gasless: false,
     gasAmount: null,

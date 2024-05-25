@@ -41,7 +41,6 @@ export default function Step2() {
   var timeout = null;
 
   const handleExecute = async () => {
-    console.log;
     toast.promise(
       () =>
         execute(

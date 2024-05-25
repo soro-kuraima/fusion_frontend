@@ -2,12 +2,25 @@
 
 import TokenSelector from "@/components/ui/TokenSelector";
 import useWallet from "@/hooks/useWallet";
-import { setGasless, setStep } from "@/redux/slice/recoverySlice";
+import {
+  setGasAmount,
+  setGasless,
+  setPasskey,
+  setPassword,
+  setStep,
+} from "@/redux/slice/recoverySlice";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@material-tailwind/react";
-import { ChevronLeft } from "lucide-react";
+import { Check, ChevronLeft, Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import {
+  setRecoveryProof,
+  toggleRecoveryDrawer,
+} from "@/redux/slice/proofSlice";
+import useRecovery from "@/hooks/useRecovery";
+import { toast } from "sonner";
 
 export default function Step2() {
   const gasless = useSelector((state) => state.recovery.gasless);
@@ -17,6 +30,66 @@ export default function Step2() {
   const domain = getDomain();
   const recoveryProof = useSelector((state) => state.proof.recoveryProof);
   const email = useSelector((state) => state.proof.email);
+  const [, gasToken] = useSelector((state) => state.selector.token);
+  const [isLoading, setIsLoading] = useState(false);
+  const gasAmount = useSelector((state) => state.recovery.gasAmount);
+  const { estimateGas, executeRecovery } = useRecovery();
+  const walletAddress = useSelector((state) => state.user.walletAddress);
+  const currentChain = useSelector((state) => state.chain.currentChain);
+  const passkey = useSelector((state) => state.recovery.passkey);
+  const password = useSelector((state) => state.recovery.password);
+
+  var timeout = null;
+
+  const handleEstimateGas = async () => {
+    await estimateGas();
+    setIsLoading(false);
+  };
+
+  const handleExecute = async () => {
+    toast.promise(
+      () =>
+        executeRecovery(
+          currentChain,
+          gasToken,
+          passkey,
+          password,
+          email,
+          walletAddress,
+          recoveryProof,
+          domain,
+          gasless
+        ),
+      {
+        loading: "Processing...",
+      }
+    );
+
+    dispatch(setRecoveryProof(null));
+    dispatch(setStep(0));
+    dispatch(setPasskey(null));
+    dispatch(setPassword(""));
+    router.push("/settings?domain=" + domain);
+  };
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    if (gasToken && walletAddress && recoveryProof) {
+      clearTimeout(timeout);
+      setIsLoading(true);
+
+      timeout = setTimeout(() => {
+        handleEstimateGas(abortController.signal);
+      }, 1000);
+    } else {
+      dispatch(setGasAmount(null));
+    }
+
+    return () => {
+      abortController.abort();
+      clearTimeout(timeout);
+    };
+  }, [gasToken, walletAddress, gasless, recoveryProof, currentChain]);
 
   return (
     <>
@@ -27,7 +100,27 @@ export default function Step2() {
         </div>
         <div className="flex justify-between items-center w-full">
           <p className="text-sm font-base text-gray-600">Network Fees</p>
-          <p className="text-xs font-semibold text-gray-800">0.00 AVAX</p>
+          <div className="text-xs font-semibold text-gray-800 flex items-center">
+            {isLoading ? (
+              <Loader2 size={14} className="animate-spin mr-2" />
+            ) : gasAmount ? (
+              (gasAmount / 10 ** 18).toFixed(5)
+            ) : (
+              "-"
+            )}{" "}
+            {gasless ? (
+              <div
+                className="w-5 h-5"
+                style={{
+                  backgroundColor: "black",
+                  maskImage: "url(/tokens/gas-logo.svg)",
+                  maskSize: "cover",
+                }}
+              ></div>
+            ) : (
+              gasToken?.name
+            )}
+          </div>
         </div>
       </div>
 
@@ -117,7 +210,7 @@ export default function Step2() {
           size="sm"
           className="rounded-lg font-outfit normal-case w-full py-3 mt-2 font-light"
           onClick={() => {
-            // dispatch(toggleProofDrawer());
+            dispatch(toggleRecoveryDrawer());
           }}
           disabled={!email}
         >

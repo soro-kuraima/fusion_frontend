@@ -10,13 +10,16 @@ import {
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { setPasskey, setStep } from "@/redux/slice/recoverySlice";
+import { setPasskey, setPassword, setStep } from "@/redux/slice/recoverySlice";
 import Image from "next/image";
+import useRecovery from "@/hooks/useRecovery";
 
 export default function Step1() {
   const passkey = useSelector((state) => state.recovery.passkey);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+  const password = useSelector((state) => state.recovery.password);
+  const { handlePasskey } = useRecovery();
 
   return (
     <>
@@ -47,6 +50,11 @@ export default function Step1() {
         }}
         size="lg"
         shrink={true}
+        value={password}
+        disabled={passkey ? true : false}
+        onChange={(e) => {
+          dispatch(setPassword(e.target.value));
+        }}
       />
       <p className="-mt-1 flex text-xs text-gray-500 ">
         <Info size={16} className="mr-1 inline" />
@@ -63,7 +71,7 @@ export default function Step1() {
         color="white"
         className=" my-2 flex h-[5.7rem] w-full font-outfit rounded-xl border-[1px] border-black bg-bg-off-white px-3"
         onClick={() => {
-          //   handlePasskey(setIsLoading);
+          handlePasskey(setIsLoading);
         }}
         disabled={isLoading || passkey ? true : false}
       >
@@ -112,6 +120,7 @@ export default function Step1() {
         onClick={() => {
           dispatch(setStep(1));
         }}
+        disabled={password.length < 8 && (passkey ? false : true)}
       >
         Next
         <ChevronRight size={16} className="-mr-2 ml-2" />

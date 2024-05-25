@@ -1,15 +1,25 @@
 "use client";
 
-import { setStep } from "@/redux/slice/changeSlice";
-import { setRecoveryHash } from "@/redux/slice/signUpSlice";
+import useChange from "@/hooks/useChange";
+import { setEmail, setStep, setRecoveryHash } from "@/redux/slice/changeSlice";
 import { Input, Button } from "@material-tailwind/react";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Step1() {
   const recoveryHash = useSelector((state) => state.change.recoveryHash);
   const dispatch = useDispatch();
+  const email = useSelector((state) => state.change.email);
+  const [isLoading, setIsLoading] = useState(false);
+  const { handleEmail } = useChange();
+
+  const isValidEmail = (email) => {
+    const re = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+    return re.test(email);
+  };
+
   return (
     <>
       <div className="bg-gray-200 w-full p-4 py-2 rounded-lg relative overflow-hidden">
@@ -32,13 +42,20 @@ export default function Step1() {
       <Input
         label="Enter your email address"
         placeholder="abc@xyz.com"
-        className="font-outfit placeholder:opacity-100"
+        className="font-outfit placeholder:opacity-100 disabled:border-[1px]"
         containerProps={{
           className: "mt-2",
         }}
+        labelProps={{
+          className: "peer-disabled:text-gray-500",
+        }}
         size="lg"
         shrink={true}
-        disabled={recoveryHash ? true : false}
+        disabled={recoveryHash ? true : false || isLoading}
+        value={email}
+        onChange={(e) => {
+          dispatch(setEmail(e.target.value));
+        }}
       />
 
       {recoveryHash && (
@@ -58,8 +75,10 @@ export default function Step1() {
           size="sm"
           className="rounded-lg font-outfit normal-case w-full py-3 mt-1 font-light flex items-center justify-center"
           onClick={() => {
-            dispatch(setStep(1));
+            handleEmail(setIsLoading);
           }}
+          disabled={!isValidEmail(email) || isLoading}
+          loading={isLoading}
         >
           Verify Email
           <ChevronRight size={16} className="-mr-2 ml-2" />
