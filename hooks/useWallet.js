@@ -16,7 +16,7 @@ import {
   setWalletAddress,
   setWalletAddresses,
 } from "@/redux/slice/userSlice";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import axios from "axios";
 import { setUpdates } from "@/redux/slice/gasSlice";
@@ -30,7 +30,7 @@ export default function useWallet() {
   const walletAddress = useSelector((state) => state.user.walletAddress);
   const walletAddresses = useSelector((state) => state.user.walletAddresses);
   const [wsProvider, setWsProvider] = useState(null);
-  const tokenBalanceData = useSelector((state) => state.user.tokenBalanceData);
+  const router = useRouter();
   const [timeout, setTimeout] = useState(null);
   const wallet = useSelector((state) => state.proof.wallet);
 
@@ -312,6 +312,11 @@ export default function useWallet() {
     const walletAddress = walletAddresses.find(
       (address) => address.chainId === chainId
     );
+
+    if (walletAddress.address === ethers.constants.AddressZero) {
+      router.push("/deploy?domain=" + getDomain());
+      return;
+    }
 
     dispatch(setToken({ token: chain.tokens[0], index: 0 }));
 
