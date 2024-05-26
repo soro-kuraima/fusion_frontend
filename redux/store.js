@@ -12,6 +12,7 @@ import proofSlice from "./slice/proofSlice.js";
 import recoverySlice from "./slice/recoverySlice.js";
 import transferSlice from "./slice/transferSlice.js";
 import changeSlice from "./slice/changeSlice.js";
+import claimSlice from "./slice/claimSlice.js";
 
 export const store = configureStore({
   reducer: {
@@ -25,6 +26,7 @@ export const store = configureStore({
     transfer: transferSlice,
     recovery: recoverySlice,
     change: changeSlice,
+    claim: claimSlice,
   },
 
   middleware: (getDefaultMiddleware) =>

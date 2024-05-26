@@ -8,10 +8,16 @@ import { Button, Chip, Tooltip } from "@material-tailwind/react";
 import { toast } from "sonner";
 import { formatAddress } from "@/utils/FormatAddress";
 import { Copy } from "lucide-react";
+import { useRouter } from "next/navigation";
+import useWallet from "@/hooks/useWallet";
 
 export default function DeployInfo() {
   const currentChain = useSelector((state) => state.chain.currentChain);
   const walletAddresses = useSelector((state) => state.user.walletAddresses);
+  const router = useRouter();
+  const { getDomain } = useWallet();
+
+  const domain = getDomain();
 
   const deployments = walletAddresses?.filter(
     (address) => address.address !== ethers.constants.AddressZero
@@ -119,7 +125,9 @@ export default function DeployInfo() {
                           toast.error("You can only claim on the base chain");
                         }
 
-                        //Handle Claim
+                        router.push(
+                          "/claim/" + chain.chainId + "?domain=" + domain
+                        );
                       }}
                     >
                       Claim

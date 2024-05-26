@@ -10,6 +10,7 @@ import ChainSelector from "@/components/ui/ChainSelector";
 import TokenModal from "@/components/modal/TokenModal";
 import TxProofModal from "@/components/modal/TxProofModal";
 import RecoveryProofModal from "@/components/modal/RecoveryProofModal";
+import ClaimModal from "@/components/modal/ClaimModal";
 
 const mainLayout = ({ children }) => {
   return (
@@ -18,6 +19,7 @@ const mainLayout = ({ children }) => {
       <TokenModal />
       <TxProofModal />
       <RecoveryProofModal />
+      <ClaimModal />
 
       <WalletProvider>
         <main className="bg-gray-200 relative flex min-h-screen flex-col items-center px-2 py-10">
