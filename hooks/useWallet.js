@@ -22,6 +22,7 @@ import axios from "axios";
 import { setUpdates } from "@/redux/slice/gasSlice";
 import { setToken } from "@/redux/slice/selectorSlice";
 import { setEmail, setType, setWallet } from "@/redux/slice/proofSlice";
+import { toast } from "sonner";
 
 export default function useWallet() {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ export default function useWallet() {
   const router = useRouter();
   const [timeout, setTimeout] = useState(null);
   const wallet = useSelector((state) => state.proof.wallet);
+  const isRequesting = useSelector((state) => state.claim.isRequesting);
 
   const getDomain = () => {
     const domain = searchParams.get("domain");
@@ -45,6 +47,28 @@ export default function useWallet() {
 
       const factory = new ethers.Contract(
         baseChain.addresses.FusionProxyFactory,
+        FusionProxyFactoryABI,
+        provider
+      );
+
+      const fusionAddress = await factory.getFusionProxy(
+        domain?.toLowerCase() + ".fusion.id"
+      );
+
+      return fusionAddress;
+    } catch (error) {
+      return ethers.constants.AddressZero;
+    }
+  };
+
+  const getFusionCurrent = async (domain) => {
+    try {
+      const provider = new ethers.providers.JsonRpcProvider(
+        currentChain.rpcUrl
+      );
+
+      const factory = new ethers.Contract(
+        currentChain.addresses.FusionProxyFactory,
         FusionProxyFactoryABI,
         provider
       );
@@ -97,6 +121,8 @@ export default function useWallet() {
         dispatch(setWalletAddresses(addresses));
       })
     );
+
+    return addresses;
   };
 
   const initializeBalance = async () => {
@@ -307,6 +333,15 @@ export default function useWallet() {
   };
 
   const switchChain = async (chainId) => {
+    if (isRequesting) {
+      toast.error("Please wait for the request to complete");
+      return;
+    }
+
+    if (!walletAddresses) {
+      return;
+    }
+
     const chain = config.find((chain) => chain.chainId === chainId);
 
     const walletAddress = walletAddresses.find(
@@ -323,6 +358,9 @@ export default function useWallet() {
     dispatch(setToken({ token: chain.tokens[0], index: 1 }));
 
     dispatch(setWalletAddress(walletAddress.address));
+
+    dispatch(setTokenBalanceData(null));
+    dispatch(setTokenConversionData(null));
 
     dispatch(setCurrentChain(chain));
   };
@@ -381,6 +419,7 @@ export default function useWallet() {
 
   return {
     getFusion,
+    getFusionCurrent,
     switchChain,
     loadAddresses,
     getDomain,

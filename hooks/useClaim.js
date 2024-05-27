@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { ethers } from "ethers";
 import {
   setDeployProof,
+  setIsFinalizing,
   setIsLoading,
   setIsRequesting,
   setStep,
@@ -17,10 +18,13 @@ import config from "@/utils/config";
 import FusionABI from "@/utils/contracts/Fusion.json";
 import axios from "axios";
 import FusionFactoryABI from "@/utils/contracts/FusionProxyFactory.json";
+import { useRouter } from "next/navigation";
+import { useConfetti } from "@/utils/ui/fireConfetti";
+import { setWalletAddresses } from "@/redux/slice/userSlice";
 
 export default function useClaim() {
   const dispatch = useDispatch();
-  const { getDomain } = useWallet();
+  const { getDomain, loadAddresses, switchChain } = useWallet();
   const { login } = useWebAuthn();
   const { password_prove } = useCircuit();
   const walletAddress = useSelector((state) => state.user.walletAddress);
@@ -28,6 +32,8 @@ export default function useClaim() {
   const walletAddresses = useSelector((state) => state.user.walletAddresses);
   const type = useSelector((state) => state.proof.type);
   const email = useSelector((state) => state.proof.email);
+  const router = useRouter();
+  const { fireMultiple } = useConfetti();
 
   const generatePasskeyProof = async () => {
     try {
@@ -51,7 +57,7 @@ export default function useClaim() {
         return;
       }
 
-      dispatch(setTxProof(proof));
+      dispatch(setDeployProof(proof));
       dispatch(toggleClaimDrawer());
       dispatch(setStep(1));
     } catch (error) {
@@ -182,6 +188,8 @@ export default function useClaim() {
         console.log(response.data.error);
         setMessage("Request Deployment");
         dispatch(setIsRequesting(false));
+        dispatch(setDeployProof(null));
+        dispatch(setStep(0));
       }
     } catch (error) {
       console.error(error);
@@ -211,10 +219,12 @@ export default function useClaim() {
         const fullfilledRequests = await fusionFactory.requests(Domain);
 
         if (fullfilledRequests.fulfilled) {
-          toast.success("Deployment Successful");
+          toast.success("Request Verified Successfully");
           setMessage("Request Deployment");
           dispatch(setIsRequesting(false));
           dispatch(setStep(2));
+          dispatch(setDeployProof(null));
+          fireMultiple();
         }
       });
     } catch (error) {
@@ -225,5 +235,73 @@ export default function useClaim() {
     }
   };
 
-  return { generatePasskeyProof, generatePasswordProof, requestDeployment };
+  const checkFinalized = async (chainId) => {
+    try {
+      const selectedChain = config.find(
+        (chain) => chain.chainId === Number(chainId)
+      );
+
+      const provider = new ethers.providers.JsonRpcProvider(
+        selectedChain.rpcUrl
+      );
+
+      const factory = new ethers.Contract(
+        selectedChain.addresses.FusionProxyFactory,
+        FusionFactoryABI,
+        provider
+      );
+
+      const domain = getDomain() + ".fusion.id";
+
+      const request = await factory.requests(domain);
+
+      if (request.fulfilled) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+
+  const finalizeDeployment = async (selectedChain) => {
+    try {
+      dispatch(setIsFinalizing(true));
+
+      const domain = getDomain();
+
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/deploy/finalize/${
+          selectedChain.chainId
+        }/${domain + ".fusion.id"}`
+      );
+
+      if (response.data.success) {
+        toast.success("Successfully Finalized Deployment");
+        let walletAddresses = await loadAddresses(domain + ".fusion.id");
+        dispatch(setWalletAddresses(walletAddresses));
+
+        dispatch(setIsFinalizing(false));
+        dispatch(setStep(0));
+        fireMultiple();
+        router.push(`/dashboard?domain=${domain}`);
+      } else {
+        toast.error("Failed to finalize deployment");
+        console.log(response.data.error);
+        dispatch(setIsFinalizing(false));
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error Finalizing Deployment");
+    }
+  };
+
+  return {
+    generatePasskeyProof,
+    generatePasswordProof,
+    requestDeployment,
+    checkFinalized,
+    finalizeDeployment,
+  };
 }

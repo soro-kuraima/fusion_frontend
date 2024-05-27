@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@material-tailwind/react";
-import { LayoutDashboard, User } from "lucide-react";
+import { LayoutDashboard, User, X } from "lucide-react";
 
 import { usePathname, useRouter } from "next/navigation";
 
@@ -33,11 +33,7 @@ const Menu = () => {
         size="sm"
         onClick={handleClick}
       >
-        {pathname === "/dashboard" ? (
-          <User size="20" />
-        ) : (
-          <LayoutDashboard size="20" />
-        )}
+        {pathname === "/dashboard" ? <User size="20" /> : <X size="20" />}
       </Button>
     </>
   );

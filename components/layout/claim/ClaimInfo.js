@@ -2,7 +2,7 @@
 
 import { ethers } from "ethers";
 import { useParams, useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import config from "@/utils/config";
 import { Ban, ChevronLeft, Info } from "lucide-react";
 import { Button } from "@material-tailwind/react";
@@ -10,6 +10,9 @@ import useWallet from "@/hooks/useWallet";
 import Step1 from "./claimInfo/Step1";
 import Step2 from "./claimInfo/Step2";
 import Step3 from "./claimInfo/Step3";
+import useClaim from "@/hooks/useClaim";
+import { useEffect, useState } from "react";
+import { setStep } from "@/redux/slice/claimSlice";
 
 export default function ClaimInfo() {
   const step = useSelector((state) => state.claim.step);
@@ -21,14 +24,35 @@ export default function ClaimInfo() {
   const router = useRouter();
   const currentChain = useSelector((state) => state.chain.currentChain);
   const isBase = currentChain?.isBase;
+  const dispatch = useDispatch();
 
   const isValid = config.find((chain) => chain.chainId === Number(id));
+
+  const { checkFinalized } = useClaim();
 
   const isDeployed = walletAddresses?.find(
     (address) =>
       address.chainId === Number(id) &&
       address.address !== ethers.constants.AddressZero
   );
+
+  const handleFinalized = async () => {
+    try {
+      const isFinalized = await checkFinalized(id);
+
+      if (isFinalized) {
+        dispatch(setStep(2));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (!isDeployed && isValid) {
+      handleFinalized();
+    }
+  }, [isDeployed, isValid, isBase]);
 
   return (
     <div className="flex flex-col items-center -mt-2 justify-center gap-3 bg-white p-8 py-5 font-outfit rounded-b-xl pb-7">

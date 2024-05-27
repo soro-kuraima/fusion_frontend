@@ -12,7 +12,7 @@ import { ethers } from "ethers";
 export default function Step1() {
   const dispatch = useDispatch();
   const recipient = useSelector((state) => state.transfer.recipient);
-  const { getFusion, getDomain } = useWallet();
+  const { getFusionCurrent: getFusion, getDomain } = useWallet();
   const domain = getDomain();
   const [isLoading, setIsLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false);

@@ -11,6 +11,7 @@ import TokenModal from "@/components/modal/TokenModal";
 import TxProofModal from "@/components/modal/TxProofModal";
 import RecoveryProofModal from "@/components/modal/RecoveryProofModal";
 import ClaimModal from "@/components/modal/ClaimModal";
+import FusionHeader from "@/components/ui/FusionHeader";
 
 const mainLayout = ({ children }) => {
   return (
@@ -27,7 +28,7 @@ const mainLayout = ({ children }) => {
 
           <div className="flex flex-col max-w-[29rem] w-full gap-y-4 flex-grow">
             <div className="flex justify-between items-center mt-16">
-              <h1 className="text-3xl font-medium ">Fusion</h1>
+              <FusionHeader />
 
               <div className="flex space-x-2">
                 <Gas />
