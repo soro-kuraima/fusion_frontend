@@ -9,6 +9,7 @@ const claimSlice = createSlice({
     claimDrawer: false,
     deployProof: null,
     isLoading: false,
+    isRequesting: false,
   },
 
   reducers: {
@@ -27,6 +28,9 @@ const claimSlice = createSlice({
     setIsLoading: (state, action) => {
       state.isLoading = action.payload;
     },
+    setIsRequesting: (state, action) => {
+      state.isRequesting = action.payload;
+    },
   },
 });
 
@@ -36,6 +40,7 @@ export const {
   toggleClaimDrawer,
   setDeployProof,
   setIsLoading,
+  setIsRequesting,
 } = claimSlice.actions;
 
 export default claimSlice.reducer;

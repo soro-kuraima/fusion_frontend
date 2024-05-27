@@ -6,7 +6,7 @@ import { Button } from "@material-tailwind/react";
 import { Info } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Step1() {
   const params = useParams();
@@ -14,6 +14,7 @@ export default function Step1() {
   const dispatch = useDispatch();
 
   const selectedChain = config.find((chain) => chain.chainId === Number(id));
+  const type = useSelector((state) => state.proof.type);
 
   return (
     <>
@@ -43,6 +44,7 @@ export default function Step1() {
         onClick={() => {
           dispatch(toggleClaimDrawer());
         }}
+        disabled={!type}
       >
         Generate ZK Proof
       </Button>

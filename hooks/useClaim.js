@@ -6,12 +6,17 @@ import { ethers } from "ethers";
 import {
   setDeployProof,
   setIsLoading,
+  setIsRequesting,
   setStep,
   toggleClaimDrawer,
 } from "@/redux/slice/claimSlice";
 import useWallet from "./useWallet";
 import useWebAuthn from "./useWebAuthn";
 import useCircuit from "./useCircuit";
+import config from "@/utils/config";
+import FusionABI from "@/utils/contracts/Fusion.json";
+import axios from "axios";
+import FusionFactoryABI from "@/utils/contracts/FusionProxyFactory.json";
 
 export default function useClaim() {
   const dispatch = useDispatch();
@@ -19,6 +24,10 @@ export default function useClaim() {
   const { login } = useWebAuthn();
   const { password_prove } = useCircuit();
   const walletAddress = useSelector((state) => state.user.walletAddress);
+  const deployProof = useSelector((state) => state.claim.deployProof);
+  const walletAddresses = useSelector((state) => state.user.walletAddresses);
+  const type = useSelector((state) => state.proof.type);
+  const email = useSelector((state) => state.proof.email);
 
   const generatePasskeyProof = async () => {
     try {
@@ -83,5 +92,138 @@ export default function useClaim() {
     }
   };
 
-  return { generatePasskeyProof, generatePasswordProof };
+  const requestDeployment = async (selectedChain, setMessage) => {
+    try {
+      dispatch(setIsRequesting(true));
+
+      setMessage("Requesting Deployment");
+
+      const baseChain = config.find((chain) => chain.isBase);
+
+      const fusionAddress = walletAddresses.find(
+        (address) => address.chainId === baseChain.chainId
+      );
+
+      if (
+        !fusionAddress ||
+        !fusionAddress.address ||
+        fusionAddress.address === ethers.constants.AddressZero
+      ) {
+        toast.error("Please add your Fusion Wallet Address");
+        setMessage("Request Deployment");
+        dispatch(setIsRequesting(false));
+        return;
+      }
+
+      const domain = getDomain() + ".fusion.id";
+
+      if (!domain) {
+        toast.error("Invalid Domain");
+        setMessage("Request Deployment");
+        dispatch(setIsRequesting(false));
+        return;
+      }
+
+      const provider = new ethers.providers.JsonRpcProvider(
+        selectedChain.rpcUrl
+      );
+
+      const baseProvider = new ethers.providers.JsonRpcProvider(
+        baseChain.rpcUrl
+      );
+
+      const fusion = new ethers.Contract(
+        fusionAddress.address,
+        FusionABI,
+        baseProvider
+      );
+
+      const txHash = await fusion.TxHash();
+      const recoveryHash = await fusion.RecoveryHash();
+      const abiCoder = new ethers.utils.AbiCoder();
+
+      const publicStorage = abiCoder.encode(
+        ["string", "string"],
+        [type, email]
+      );
+
+      const initializer = fusion.interface.encodeFunctionData("setupFusion", [
+        ethers.utils.keccak256(
+          ethers.utils.toUtf8Bytes(domain?.toLowerCase() + ".fusion.id")
+        ),
+        selectedChain.addresses.PasswordVerifier,
+        selectedChain.addresses.SignatureVerifier,
+        selectedChain.addresses.FusionForwarder,
+        selectedChain.addresses.FusionGasTank,
+        txHash,
+        recoveryHash,
+        publicStorage,
+      ]);
+
+      const chainDeployRequest = {
+        domain,
+        proof: deployProof,
+        type: "password",
+        initializer,
+      };
+
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/deploy/request/${selectedChain.chainId}`,
+        {
+          chainDeployRequest,
+        }
+      );
+
+      if (response.data.success) {
+        toast.success("Successfully Requested Deployment");
+        await checkForFulfillment(selectedChain, setMessage);
+      } else {
+        toast.error("Failed to deploy to chain");
+        console.log(response.data.error);
+        setMessage("Request Deployment");
+        dispatch(setIsRequesting(false));
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error Requesting Deployment");
+      setMessage("Request Deployment");
+      dispatch(setIsRequesting(false));
+    }
+  };
+
+  const checkForFulfillment = async (selectedChain, setMessage) => {
+    try {
+      setMessage("Checking for Fulfillment");
+
+      const wsProvider = new ethers.providers.WebSocketProvider(
+        selectedChain.wsUrl
+      );
+
+      const fusionFactory = new ethers.Contract(
+        selectedChain.addresses.FusionProxyFactory,
+        FusionFactoryABI,
+        wsProvider
+      );
+
+      const Domain = getDomain() + ".fusion.id";
+
+      fusionFactory.on("DomainRequestFulfilled", async () => {
+        const fullfilledRequests = await fusionFactory.requests(Domain);
+
+        if (fullfilledRequests.fulfilled) {
+          toast.success("Deployment Successful");
+          setMessage("Request Deployment");
+          dispatch(setIsRequesting(false));
+          dispatch(setStep(2));
+        }
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error("Error Checking for Deployment");
+      setMessage("Request Deployment");
+      dispatch(setIsRequesting(false));
+    }
+  };
+
+  return { generatePasskeyProof, generatePasswordProof, requestDeployment };
 }
