@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 
 const Balance = () => {
   const [usdBalance, setUsdBalance] = useState(0);
+  const currentChain = useSelector((state) => state.chain.currentChain);
 
   const tokenBalanceData = useSelector((state) => state.user.tokenBalanceData);
   const tokenConversionData = useSelector(
@@ -47,6 +48,7 @@ const Balance = () => {
         <Button
           size="sm"
           className="rounded-full p-0 h-6 w-6 flex items-center justify-center text-2xl font-light"
+          onClick={() => window.open(currentChain.faucetUrl, "_blank")}
         >
           <Plus className="w-4 h-4" />
         </Button>
