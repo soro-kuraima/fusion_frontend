@@ -12,7 +12,11 @@ import { useConfetti } from "@/utils/ui/fireConfetti";
 export default function useBuy() {
   const walletAddress = useSelector((state) => state.user.walletAddress);
   const dispatch = useDispatch();
-  const { initializeProofWallet, loadGasCredit } = useWallet();
+  const {
+    initializeProofWallet,
+    loadGasCredit,
+    loadTransactions,
+  } = useWallet();
   const txProof = useSelector((state) => state.proof.txProof);
 
   const [selectedToken, gasToken] = useSelector(
@@ -647,6 +651,7 @@ export default function useBuy() {
             spread: 120,
             startVelocity: 45,
           });
+          loadTransactions();
         } else {
           console.log(response.data);
           toast.error("Failed to verify transaction");
@@ -685,6 +690,7 @@ export default function useBuy() {
             spread: 120,
             startVelocity: 45,
           });
+          loadTransactions();
         } else {
           console.log(response.data);
           toast.error("Failed to verify transaction");

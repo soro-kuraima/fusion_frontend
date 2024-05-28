@@ -10,6 +10,7 @@ const userSlice = createSlice({
     tokenConversionData: null,
     gasCredit: 0,
     isDeployed: true,
+    history: null,
   },
 
   reducers: {
@@ -36,6 +37,10 @@ const userSlice = createSlice({
     setDeployed: (state, action) => {
       state.isDeployed = action.payload;
     },
+
+    setHistory: (state, action) => {
+      state.history = action.payload;
+    },
   },
 });
 
@@ -46,6 +51,7 @@ export const {
   setTokenConversionData,
   setGasCredit,
   setDeployed,
+  setHistory,
 } = userSlice.actions;
 
 export default userSlice.reducer;

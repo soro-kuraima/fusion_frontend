@@ -11,6 +11,7 @@ import FusionABI from "@/utils/contracts/Fusion.json";
 import {
   setDeployed,
   setGasCredit,
+  setHistory,
   setTokenBalanceData,
   setTokenConversionData,
   setWalletAddress,
@@ -359,6 +360,8 @@ export default function useWallet() {
 
     dispatch(setWalletAddress(walletAddress.address));
 
+    dispatch(setHistory(null));
+
     dispatch(setTokenBalanceData(null));
     dispatch(setTokenConversionData(null));
 
@@ -417,6 +420,27 @@ export default function useWallet() {
     }
   };
 
+  const loadTransactions = async () => {
+    try {
+      const domain = getDomain();
+
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/transactions/${
+          currentChain.chainId
+        }/${domain + ".fusion.id"}`
+      );
+
+      if (response.data.success) {
+        dispatch(setHistory(response.data.transactions));
+      } else {
+        dispatch(setHistory([]));
+      }
+    } catch (error) {
+      console.log(error);
+      dispatch(setHistory([]));
+    }
+  };
+
   return {
     getFusion,
     getFusionCurrent,
@@ -431,5 +455,6 @@ export default function useWallet() {
     loadPublicStorage,
     initializeProofWallet,
     getNonce,
+    loadTransactions,
   };
 }

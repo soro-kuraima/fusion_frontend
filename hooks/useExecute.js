@@ -21,7 +21,7 @@ export default function useExecute() {
   const amount = useSelector((state) => state.transfer.amount);
   const recipient = useSelector((state) => state.transfer.recipient);
   const txProof = useSelector((state) => state.proof.txProof);
-  const { getDomain, loadGasCredit } = useWallet();
+  const { getDomain, loadGasCredit, loadTransactions } = useWallet();
   const domain = getDomain();
   const { fireMultiple } = useConfetti();
 
@@ -365,6 +365,7 @@ export default function useExecute() {
           if (response.data.success) {
             await loadGasCredit(domain?.toLowerCase() + ".fusion.id");
             toast.success("Transaction sent successfully");
+            loadTransactions();
             fireMultiple();
             return true;
           } else {
@@ -382,6 +383,7 @@ export default function useExecute() {
 
           if (response.data.success) {
             toast.success("Transaction sent successfully");
+            loadTransactions();
             fireMultiple();
             return true;
           } else {
@@ -398,6 +400,7 @@ export default function useExecute() {
           );
           if (response.data.success) {
             toast.success("Transaction sent successfully");
+            loadTransactions();
             fireMultiple();
             return true;
           } else {
@@ -484,6 +487,7 @@ export default function useExecute() {
           if (response.data.success) {
             await loadGasCredit(domain?.toLowerCase() + ".fusion.id");
             toast.success("Transaction sent successfully");
+            loadTransactions();
             fireMultiple();
             return true;
           } else {
@@ -501,6 +505,7 @@ export default function useExecute() {
 
           if (response.data.success) {
             toast.success("Transaction sent successfully");
+            loadTransactions();
             fireMultiple();
             return true;
           } else {
@@ -517,6 +522,7 @@ export default function useExecute() {
           );
           if (response.data.success) {
             toast.success("Transaction sent successfully");
+            loadTransactions();
             fireMultiple();
             return true;
           } else {
