@@ -13,10 +13,11 @@ import RecoveryProofModal from "@/components/modal/RecoveryProofModal";
 import ClaimModal from "@/components/modal/ClaimModal";
 import FusionHeader from "@/components/ui/FusionHeader";
 import BackgroundAnimation from "@/components/ui/BackgroundAnimation";
+import { Suspense } from "react";
 
 const mainLayout = ({ children }) => {
   return (
-    <>
+    <Suspense>
       <BackgroundAnimation />
       <QRcodeModal />
       <TokenModal />
@@ -43,7 +44,7 @@ const mainLayout = ({ children }) => {
           </div>
         </main>
       </WalletProvider>
-    </>
+    </Suspense>
   );
 };
 

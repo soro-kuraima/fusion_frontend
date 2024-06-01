@@ -1,5 +1,10 @@
 import SettingsMain from "@/components/layout/settings/SettingsMain";
+import { Suspense } from "react";
 
 export default function Settings() {
-  return <SettingsMain />;
+  return (
+    <Suspense>
+      <SettingsMain />;
+    </Suspense>
+  );
 }

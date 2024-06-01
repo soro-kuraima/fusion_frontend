@@ -1,5 +1,10 @@
 import DeployMain from "@/components/layout/deploy/DeployMain";
+import { Suspense } from "react";
 
 export default function Deploy() {
-  return <DeployMain />;
+  return (
+    <Suspense>
+      <DeployMain />;
+    </Suspense>
+  );
 }
