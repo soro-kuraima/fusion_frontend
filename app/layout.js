@@ -1,11 +1,14 @@
 import { Outfit } from "next/font/google";
-import "./globals.css";
-import ReduxProvider from "@/provider/ReduxProvider";
-import { store } from "@/redux/store";
+
 import { Toaster } from "sonner";
 
+import { store } from "@/redux/store";
+import ReduxProvider from "@/provider/ReduxProvider";
+
+import "./globals.css";
+
 const outfit = Outfit({
-  subsets: ["latin-ext"],
+  subsets: ["latin"],
   variable: "--font-outfit",
 });
 

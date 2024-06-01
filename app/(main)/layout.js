@@ -12,10 +12,12 @@ import TxProofModal from "@/components/modal/TxProofModal";
 import RecoveryProofModal from "@/components/modal/RecoveryProofModal";
 import ClaimModal from "@/components/modal/ClaimModal";
 import FusionHeader from "@/components/ui/FusionHeader";
+import BackgroundAnimation from "@/components/ui/BackgroundAnimation";
 
 const mainLayout = ({ children }) => {
   return (
     <>
+      <BackgroundAnimation />
       <QRcodeModal />
       <TokenModal />
       <TxProofModal />
@@ -23,7 +25,7 @@ const mainLayout = ({ children }) => {
       <ClaimModal />
 
       <WalletProvider>
-        <main className="bg-gray-200 relative flex min-h-screen flex-col items-center px-2 py-10">
+        <main className="relative flex min-h-screen flex-col items-center px-2 py-10 z-10">
           <ChainSelector />
 
           <div className="flex flex-col max-w-[29rem] w-full gap-y-4 flex-grow">

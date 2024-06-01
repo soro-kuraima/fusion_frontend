@@ -27,7 +27,7 @@ const SignUpInfo = () => {
       </div>
 
       <div className="flex justify-center items-center h-20 bg-black text-white rounded-2xl">
-        <p className="text-xs">© 2024 Fusion. All rights reserved.</p>
+        <p className="text-xs">ChainLink BlockMagic Hackathon</p>
       </div>
     </section>
   );

@@ -12,6 +12,10 @@ module.exports = withMT({
     extend: {
       screens: {},
 
+      gridTemplateColumns: {
+        16: "repeat(16, minmax(0, 1fr))",
+      },
+
       backgroundImage: {},
 
       fontFamily: {
