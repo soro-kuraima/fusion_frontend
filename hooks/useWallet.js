@@ -193,7 +193,7 @@ export default function useWallet() {
       }
 
       const updatedBalanceData = tokenBalanceData.map((balance) => {
-        if (!balance.address) {
+        if (!balance.address && balance.balance !== newBalance) {
           return {
             ...balance,
             balance: newBalance,

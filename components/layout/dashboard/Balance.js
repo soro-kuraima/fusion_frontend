@@ -24,7 +24,13 @@ const Balance = () => {
       for (let i = 0; i < tokenBalanceData.length; i++) {
         const balance =
           tokenBalanceData[i].balance / 10 ** tokenBalanceData[i].decimals;
-        const conversion = tokenConversionData[i].value;
+        const conversion = tokenConversionData.find(
+          (conversion) => conversion.address === tokenBalanceData[i].address
+        )?.value;
+
+        if (!conversion) {
+          continue;
+        }
 
         totalUsdBalance += balance / conversion;
       }

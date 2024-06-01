@@ -11,7 +11,7 @@ export default function ChainItem({ chainId, logo, name, isActive }) {
         if (!isActive) switchChain(chainId);
       }}
       style={{
-        width: isActive ? "100px" : "40px",
+        width: isActive ? "120px" : "40px",
         gap: isActive ? "0.5rem" : "0",
       }}
     >

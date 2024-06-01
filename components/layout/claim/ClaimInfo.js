@@ -128,7 +128,7 @@ export default function ClaimInfo() {
         </>
       )}
 
-      {!isDeployed && isValid && (
+      {!isDeployed && isValid && isBase && (
         <>
           {step === 0 && <Step1 />}
           {step === 1 && <Step2 />}

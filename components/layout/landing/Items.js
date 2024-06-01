@@ -46,9 +46,9 @@ const items = [
 
   {
     type: "image",
-    image: "/tokens/usdc-logo.svg",
+    image: "/tokens/op-logo.svg",
     height: 100,
-    width: 105,
+    width: 110,
     top: "50%",
     left: "10%",
   },

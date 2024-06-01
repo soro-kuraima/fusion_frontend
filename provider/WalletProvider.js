@@ -17,6 +17,7 @@ export default function WalletProvider({ children }) {
   } = useWallet();
   const currentChain = useSelector((state) => state.chain.currentChain);
   const walletAddress = useSelector((state) => state.user.walletAddress);
+  var timeout = null;
 
   useEffect(() => {
     const domain = getDomain();
@@ -29,12 +30,23 @@ export default function WalletProvider({ children }) {
   }, []);
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     if (currentChain && walletAddress) {
-      listenForBalance();
-      loadConversionData();
-      loadPublicStorage();
-      loadTransactions();
+      timeout = setTimeout(() => {
+        listenForBalance(abortController.signal);
+        loadConversionData(abortController.signal);
+        loadPublicStorage(abortController.signal);
+        loadTransactions(abortController.signal);
+      }, 1000);
+    } else {
+      clearTimeout(timeout);
     }
+
+    return () => {
+      abortController.abort();
+      clearTimeout(timeout);
+    };
   }, [currentChain, walletAddress]);
 
   return <>{children}</>;
