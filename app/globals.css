@@ -49,6 +49,11 @@ body {
   background-color: currentColor;
 }
 
+#logo-svg path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 0;
+}
+
 .animate > div {
   animation: diagonal-slide 4s infinite linear;
   animation-delay: calc(var(--i) * 0.4s);
