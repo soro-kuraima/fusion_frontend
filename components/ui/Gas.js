@@ -25,7 +25,7 @@ const Gas = () => {
       />
 
       <div className="text-sm">
-        <span>{gasCredit ? (gasCredit / 10 ** 18).toFixed(2) : 0.0}</span>
+        <span>{gasCredit ? (gasCredit / 10 ** 18).toFixed(3) : 0.0}</span>
         <span className="ml-1 font-medium">GAS</span>
       </div>
 
