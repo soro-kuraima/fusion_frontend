@@ -185,6 +185,8 @@ export default function useWallet() {
       currentChain.wsUrl
     );
 
+    setWsProvider(WsProvider);
+
     WsProvider.on("block", async () => {
       const newBalance = Number(await WsProvider.getBalance(walletAddress));
 
@@ -251,8 +253,6 @@ export default function useWallet() {
         dispatch(setTokenBalanceData(balanceData));
       });
     });
-
-    setWsProvider(WsProvider);
   };
 
   const convertBalance = async (convert_id, id) => {

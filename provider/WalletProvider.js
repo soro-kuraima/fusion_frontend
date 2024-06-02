@@ -17,7 +17,6 @@ export default function WalletProvider({ children }) {
   } = useWallet();
   const currentChain = useSelector((state) => state.chain.currentChain);
   const walletAddress = useSelector((state) => state.user.walletAddress);
-  var timeout = null;
 
   useEffect(() => {
     const domain = getDomain();
@@ -31,6 +30,9 @@ export default function WalletProvider({ children }) {
 
   useEffect(() => {
     const abortController = new AbortController();
+    let timeout;
+
+    clearTimeout(timeout);
 
     if (currentChain && walletAddress) {
       timeout = setTimeout(() => {
