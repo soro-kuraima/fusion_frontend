@@ -7,7 +7,7 @@ export default function TransferStepper() {
   const step = useSelector((state) => state.transfer.step);
 
   return (
-    <div className="flex w-full flex-col items-center bg-white rounded-t-2xl gap-3 py-5">
+    <div className="flex w-full flex-col items-center bg-white shadow-lg rounded-t-2xl gap-3 py-5">
       <p className=" font-normal text-sm text-gray-700">Transfer</p>
 
       <Stepper

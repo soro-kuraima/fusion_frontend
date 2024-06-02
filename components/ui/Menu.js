@@ -29,7 +29,7 @@ const Menu = () => {
     <>
       <Button
         color="white"
-        className=" rounded-full p-1.5 aspect-square"
+        className=" rounded-full p-1.5 aspect-square shadow-md"
         size="sm"
         onClick={handleClick}
       >

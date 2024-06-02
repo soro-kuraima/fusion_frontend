@@ -8,7 +8,7 @@ const DashboardMain = () => {
     <div className="space-y-1">
       <Balance />
 
-      <div className="bg-white py-6 p-16 md:px-20 rounded-b-xl flex justify-between">
+      <div className="bg-white py-6 p-16 md:px-20 rounded-b-xl flex shadow-lg justify-between">
         <RoundedGrayButton label="Transfer" href="/transfer">
           <ArrowLeftRight size={20} />
         </RoundedGrayButton>

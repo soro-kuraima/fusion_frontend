@@ -38,11 +38,11 @@ export default function SettingsMain() {
 
   return (
     <>
-      <div className="flex w-full flex-col items-center bg-white rounded-t-2xl gap-3 py-5">
+      <div className="flex w-full flex-col items-center bg-white shadow-lg rounded-t-2xl gap-3 py-5">
         <p className=" font-normal text-sm text-gray-700">Settings</p>
       </div>
 
-      <div className="flex flex-col items-center -mt-2 justify-center gap-3 bg-white p-8 py-5 font-outfit rounded-b-xl pb-7">
+      <div className="flex flex-col items-center -mt-2 justify-center shadow-lg gap-3 bg-white p-8 py-5 font-outfit rounded-b-xl pb-7">
         <div
           className="w-full gap-3 flex flex-col p-4 bg-blue-50 rounded-2xl px-5 cursor-pointer "
           onClick={() => {

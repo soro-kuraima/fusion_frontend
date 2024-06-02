@@ -7,7 +7,7 @@ export default function GasStepper() {
   const step = useSelector((state) => state.gas.step);
 
   return (
-    <div className="flex w-full flex-col items-center bg-white rounded-t-2xl gap-3 py-5">
+    <div className="flex w-full flex-col items-center shadow-lg bg-white rounded-t-2xl gap-3 py-5">
       <p className=" font-normal text-sm text-gray-700">Buy Gas Credits</p>
 
       <Stepper

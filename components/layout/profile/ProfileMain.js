@@ -33,7 +33,7 @@ export default function ProfileMain() {
   return (
     <div className="text-center gap-3 flex justify-between bg-white p-8 py-5 h-24 rounded-t-xl relative items-center">
       <div
-        className="w-full flex flex-col rounded-t-xl absolute top-0 left-0 h-24 z-0"
+        className="w-full shadow-lg flex flex-col rounded-t-xl absolute top-0 left-0 h-24 z-0"
         style={{
           filter: `contrast(170%) brightness(400%)`,
           background: `linear-gradient(302deg,${color}, rgba(0,0,0,0)),

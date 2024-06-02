@@ -44,7 +44,7 @@ const Balance = () => {
   }, [tokenBalanceData, tokenConversionData]);
 
   return (
-    <div className="text-center gap-3 flex flex-col bg-white p-8 py-6 rounded-t-xl">
+    <div className="text-center gap-3 flex flex-col shadow-lg bg-white p-8 py-6 rounded-t-xl">
       <p className="text-gray-600 text-sm">Total Balance</p>
 
       <div className="flex text-4xl font-medium items-center space-x-3 justify-center">

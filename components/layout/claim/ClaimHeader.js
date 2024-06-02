@@ -21,7 +21,7 @@ export default function ClaimHeader() {
   );
 
   return (
-    <div className="flex w-full flex-col items-center bg-white rounded-t-2xl gap-3 py-5">
+    <div className="flex w-full shadow-lg flex-col items-center bg-white rounded-t-2xl gap-3 py-5">
       <p className=" font-normal text-sm text-gray-700">Claim</p>
 
       {!isDeployed && isValid && (

@@ -17,7 +17,7 @@ export default function Tokens() {
   );
 
   return (
-    <div className="text-center gap-3 flex flex-col bg-white p-8 py-6 rounded-b-xl -mt-2.5 relative">
+    <div className="text-center gap-3 flex shadow-lg flex-col bg-white p-8 py-6 rounded-b-xl -mt-2.5 relative">
       <div className="flex justify-between items-center">
         <p className="font-medium text-lg">Tokens</p>
 

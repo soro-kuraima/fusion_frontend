@@ -55,7 +55,7 @@ export default function ClaimInfo() {
   }, [isDeployed, isValid, isBase]);
 
   return (
-    <div className="flex flex-col items-center -mt-2 justify-center gap-3 bg-white p-8 py-5 font-outfit rounded-b-xl pb-7">
+    <div className="flex flex-col items-center shadow-lg -mt-2 justify-center gap-3 bg-white p-8 py-5 font-outfit rounded-b-xl pb-7">
       {isDeployed && (
         <>
           <div className="bg-gray-200 rounded-full h-[150px] w-[150px] flex items-center justify-center">

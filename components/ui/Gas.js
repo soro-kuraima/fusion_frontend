@@ -15,7 +15,7 @@ const Gas = () => {
   const domain = getDomain();
 
   return (
-    <div className="bg-white py-1 px-2 rounded-full flex items-center gap-2">
+    <div className="bg-white py-1 px-2 rounded-full shadow-md flex items-center gap-2">
       <Image
         src="/tokens/gas-logo.svg"
         alt="Gas"
