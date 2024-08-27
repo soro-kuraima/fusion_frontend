@@ -184,7 +184,10 @@ export default function useSignup() {
         {
           forwardRequest,
         }
-      );
+      );;
+
+      console.log(response);
+      console.log(response.data)
 
       if (response.data.success === true) {
         const factory = new ethers.Contract(
@@ -194,6 +197,7 @@ export default function useSignup() {
         );
 
         const proxy = await factory.getFusionProxy(domain + ".fusion.id");
+
 
         if (proxy === ethers.constants.AddressZero) {
           throw new Error("Failed to deploy wallet");
