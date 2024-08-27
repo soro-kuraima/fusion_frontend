@@ -13,8 +13,8 @@ const outfit = Outfit({
 });
 
 export const metadata = {
-  title: "Fusion",
-  description: "Fusion: A smart contract zk-based wallet",
+  title: "De-fuse",
+  description: "De-fuse: An account abstraction zk-proof based wallet",
 };
 
 export default function RootLayout({ children }) {

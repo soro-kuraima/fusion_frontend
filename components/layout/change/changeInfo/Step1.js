@@ -32,7 +32,7 @@ export default function Step1() {
 
         <Image
           src="/ShieldIcon.png"
-          alt="Fusion Gas"
+          alt="defuse Gas"
           width={150}
           height={50}
           className="absolute -top-2 -right-6 z-10 opacity-60"

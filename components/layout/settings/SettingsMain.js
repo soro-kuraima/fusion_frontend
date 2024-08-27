@@ -68,7 +68,7 @@ export default function SettingsMain() {
                   <span className="text-xl font-bold text-black">
                     {domain ? domain : "-"}
                   </span>
-                  .fusion.id
+                  .defuse.id
                 </p>
               </div>
               <div className="flex justify-between w-full items-center">

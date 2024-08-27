@@ -14,7 +14,7 @@ export default function DeployAbout() {
 
       <Image
         src="/SpeakerIcon.png"
-        alt="Fusion Gas"
+        alt="defuse Gas"
         width={150}
         height={50}
         className="absolute -top-2 -left-8 z-10 opacity-60"

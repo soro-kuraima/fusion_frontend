@@ -12,10 +12,10 @@ const SignupFormContainer = () => {
     >
       <div>
         <h1 className="text-xl font-medium text-white w-fit mx-auto uppercase">
-          Fusion
+          Defuse
         </h1>
         <p className="text-white text-sm w-fit mx-auto text-center">
-          zk-based multichain smart contract wallet
+          zk-based multichain AA Wallet
         </p>
       </div>
 

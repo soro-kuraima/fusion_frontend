@@ -21,7 +21,7 @@ const SignupForm = () => {
           color="blue-gray"
           className="text-center font-outfit mb-6"
         >
-          Signup to Fusion
+          Signup to Defuse
         </Typography>
 
         <Steps />

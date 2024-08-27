@@ -117,7 +117,7 @@ export default function Step1() {
     <>
       <Input
         label="Enter Recipient"
-        placeholder="vitalik.fusion.id"
+        placeholder="vitalik.defuse.id"
         className="font-outfit placeholder:opacity-100"
         containerProps={{
           className: "mt-2",
@@ -135,7 +135,7 @@ export default function Step1() {
         {!recipient && (
           <div className={"mt-2 text-xs flex items-center text-gray-600"}>
             <Info size={14} className="inline mr-1" />
-            Enter a valid Fusion domain or an arbitrary address.
+            Enter a valid defuse domain or an arbitrary address.
           </div>
         )}
 
@@ -149,7 +149,7 @@ export default function Step1() {
         {!isLoading && recipient && !isValid && (
           <div className={"mt-2 text-xs flex text-red-600 "}>
             <Info size={14} className="inline mt-0.5 mr-1" />
-            Fusion domain or address is invalid.
+            Defuse domain or address is invalid.
           </div>
         )}
 

@@ -45,7 +45,7 @@ url("data:image/svg+xml,%3Csvg viewBox='0 0 246 246' xmlns='http://www.w3.org/20
         <p className="text-black font-bold text-3xl z-10 text-left">
           {domain ? domain : "-"}
         </p>
-        <p className="text-left text-gray-700 text-sm">.fusion.id</p>
+        <p className="text-left text-gray-700 text-sm">.defuse.id</p>
       </div>
 
       <div

@@ -38,7 +38,7 @@ const QRcodeModal = () => {
           <span className="text-lg font-bold text-black">
             {domain ? domain : "-"}
           </span>
-          .fusion.id
+          .defuse.id
         </p>
 
         <div className="w-fit mx-auto">

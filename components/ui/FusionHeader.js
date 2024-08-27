@@ -15,7 +15,7 @@ export default function FusionHeader() {
         router.push(`/dashboard?domain=${domain}`);
       }}
     >
-      Fusion
+      Defuse
     </h1>
   );
 }

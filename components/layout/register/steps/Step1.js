@@ -102,7 +102,7 @@ const Step1 = () => {
             "flex items-center rounded-none border font-outfit hover:bg-transparent active:bg-transparent border-x-0 border-t-0 border-blue-gray-200 px-3 py-0 text-sm font-bold normal-case"
           }
         >
-          .fusion.id
+          .defuse.id
         </Button>
       </div>
 

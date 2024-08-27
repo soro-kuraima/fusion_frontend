@@ -1,94 +1,12 @@
 "use client";
 
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { useRef } from "react";
-import anime from "animejs";
 import { Button } from "@material-tailwind/react";
 import { ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import FloatingItem from "./FloatingItem";
-import items from "./Items";
-import GridPaths from "./GridPaths";
 
 export default function LandingMain() {
-  const gallery = useRef(null);
   const router = useRouter();
-
-  useGSAP(() => {
-    gsap.to(gallery.current, {
-      opacity: 1,
-      duration: 10,
-    });
-
-    let ctx = gsap.context(() => {
-      window.onmousemove = (e) => {
-        const mouseX = e.clientX;
-        const mouseY = e.clientY;
-
-        const ratioX = mouseX / window.innerWidth;
-        const ratioY = mouseY / window.innerHeight;
-
-        const maxPanX = gallery.current?.offsetWidth - window.innerWidth;
-        const maxPanY = gallery.current?.offsetHeight - window.innerHeight;
-
-        const panX = ratioX * maxPanX * -1;
-        const panY = ratioY * maxPanY * -1;
-
-        gsap.to(gallery.current, {
-          x: panX,
-          y: panY,
-          duration: 1.5,
-        });
-      };
-    }, gallery);
-
-    return () => ctx.revert();
-  }, [gallery]);
-
-  useGSAP(() => {
-    const path = document.getElementById("grid").querySelectorAll("path");
-    for (let i = 0; i < path?.length; i++) {
-      let pathEl = path[i];
-      let offset = anime.setDashoffset(pathEl);
-      pathEl.setAttribute("stroke-dashoffset", offset);
-
-      anime({
-        targets: pathEl,
-        strokeDashoffset: [offset, 0],
-        duration: anime.random(5000, 15000),
-        delay: anime.random(0, 2000),
-        loop: true,
-        direction: "alternate",
-        easing: "easeInOutSine",
-        autoplay: true,
-      });
-    }
-
-    anime({
-      targets: ["#logo-svg path"],
-      strokeDashoffset: [anime.setDashoffset, 0],
-      easing: "easeInOutSine",
-      duration: 20000,
-      delay: function (el, i) {
-        return i * 250;
-      },
-      direction: "alternate",
-      loop: true,
-    });
-
-    anime({
-      targets: ["#logo-svg path"],
-      fill: ["#ffffff00", "#000000"],
-      easing: "easeInOutSine",
-      duration: 5000,
-      delay: function (el, i) {
-        return i * 250;
-      },
-      direction: "alternate",
-      loop: true,
-    });
-  }, []);
+  
 
   return (
     <div className="h-[100vh] w-[100vw] relative overflow-hidden">
@@ -119,23 +37,6 @@ export default function LandingMain() {
           Launch
           <ChevronRight size={16} className="ml-2 -mr-2" />
         </Button>
-      </div>
-      <div
-        className="h-[200vh] w-[200vw] relative z-20 opacity-0"
-        ref={gallery}
-      >
-        {items.map((item, index) => (
-          <FloatingItem key={index} item={item} />
-        ))}
-        <div className="w-full h-full top-0 left-0 absolute opacity-15">
-          <svg
-            id="grid"
-            preserveAspectRatio="xMidYMid meet"
-            viewBox="150 150 1000 550"
-          >
-            <GridPaths />
-          </svg>
-        </div>
       </div>
     </div>
   );

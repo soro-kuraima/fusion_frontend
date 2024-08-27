@@ -6,13 +6,13 @@ const SignUpInfo = () => {
   return (
     <section className="flex-1 flex justify-between flex-col">
       <div className="rounded-2xl p-10 text-center space-y-5">
-        <h1 className="text-xl font-bold text-gray-800 uppercase">Fusion</h1>
+        <h1 className="text-xl font-bold text-gray-800 uppercase">Defuse</h1>
 
         <h2 className="text-black mt-2 text-6xl uppercase font-medium leading-tight text-center">
-          <span>ZK-POWERED</span> <br />
+          <span>ZK-Proof</span> <br />
           <div className="relative">
             <div className="absolute w-8/12 h-6 bg-red-100 bottom-1 rounded-full z-0 left-1/2 -translate-x-1/2"></div>
-            <span className="relative z-10">FORTRESS</span>
+            <span className="relative z-10">AA Wallet</span>
           </div>
         </h2>
       </div>
@@ -24,10 +24,6 @@ const SignUpInfo = () => {
           Login Now
           <MoveRight size={16} className="inline-block ml-1" />
         </Link>
-      </div>
-
-      <div className="flex justify-center items-center h-20 bg-black text-white rounded-2xl">
-        <p className="text-xs">ChainLink BlockMagic Hackathon</p>
       </div>
     </section>
   );

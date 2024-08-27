@@ -93,8 +93,8 @@ const LoginForm = () => {
             <div className="mt-2 flex w-full">
               <Input
                 variant="standard"
-                label="Your Fusion Domain"
-                placeholder="vitalik"
+                label="Your defuse Domain"
+                placeholder="abhishek"
                 className="font-outfit"
                 ref={inputRef}
                 onChange={(e) => handleName(e)}
@@ -109,7 +109,7 @@ const LoginForm = () => {
                   "flex items-center rounded-none border font-outfit hover:bg-transparent active:bg-transparent border-x-0 border-t-0 border-blue-gray-200 px-3 py-0 text-sm font-bold normal-case"
                 }
               >
-                .fusion.id
+                .defuse.id
               </Button>
             </div>
           </div>
